@@ -1,4 +1,3 @@
-import Ide from "@/app/components/questions/ide";
 import IdeContainer from "@/app/components/questions/ideContainer";
 import QuestionBox from "@/app/components/questions/questionBox";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";

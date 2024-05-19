@@ -39,7 +39,7 @@ export default function IdeContainer({editorTypes, questionId}:Props) {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         for (let i=0;i<editorTypes.length;i++) {
-            createSubmission("http://localhost:3000/api/createSubmission", {
+            createSubmission("/api/createSubmission", {
                 username: "admin",
                 questionId: questionId,
                 language: editorTypes[i],
