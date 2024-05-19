@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export function TopNavigationBar() {
   return (
     <nav className="flex w-full items-center justify-between text-xl p-4 font-semibold border-b">
-      <div>Problems</div>
+      <Link href="/questions">Problems</Link>
       <div>Sign in</div>
     </nav>
   );

@@ -1,4 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
+import { db } from "../../../server/db/index";
+import { questions } from "../../../server/db/schema";
+import { eq } from "drizzle-orm";
 
 export interface IQuestion {
     id: string;
@@ -6,45 +9,20 @@ export interface IQuestion {
     question: string;
 }
 
-export class QuestionRepository implements IBaseRepository<IQuestion> {
-    private questions: IQuestion[];
+export class QuestionRepository implements IBaseRepository<any> {
 
-    constructor() {
-        this.questions = [
-            {
-                id: "1",
-                title: "one",
-                question: "testing this question"
-            },
-            {
-                id: "2",
-                title: "two",
-                question: "hello world"
-            },
-            {
-                id: "3",
-                title: "three",
-                question: "hello world"
-            },
-            {
-                id: "4",
-                title: "four",
-                question: "hello world"
-            },
-            {
-                id: "5",
-                title: "five",
-                question: "hello world"
-            },
-        ]
-    }
+    async get(id: number): Promise<any> {
+        const result = await db.select().from(questions).where(eq(questions.id, id));
+        return result
+    };
 
-    get(id: string): any {
-        return this.questions[0];
+
+    async getAll(): Promise<any> {
+        const result = await db.select().from(questions);
+        return result
     };
-    getAll(): any {
-        return this.questions;
-    };
+
+    
     create(): any {};
     update(): any {};
     delete(): any {};
