@@ -1,4 +1,5 @@
-import Ide from "@/app/components/ide";
+import Ide from "@/app/components/questions/ide";
+import IdeContainer from "@/app/components/questions/ideContainer";
 import QuestionBox from "@/app/components/questions/questionBox";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
 
@@ -11,7 +12,7 @@ export default async function QuestionPage({params}: {params: {slug: number}}) {
     return(
         <section className="flex flex-row justify-between">
             <QuestionBox id={params.slug}/>
-            <Ide type="html"/>
+            <IdeContainer editorTypes={["html", "css", "javascript"]} questionId={params.slug}/>
         </section>
     )
 }

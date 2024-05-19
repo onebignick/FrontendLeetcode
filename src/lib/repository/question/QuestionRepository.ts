@@ -1,6 +1,6 @@
 import { IBaseRepository } from "../BaseRepository";
-import { db } from "../../../server/db/index";
-import { questions } from "../../../server/db/schema";
+import { db } from "@/server/db/index";
+import { questions } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export interface IQuestion {
