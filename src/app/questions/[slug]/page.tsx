@@ -1,5 +1,6 @@
-import IdeContainer from "@/app/components/questions/ideContainer";
-import QuestionBox from "@/app/components/questions/questionBox";
+import CombinedCodeEditor from "@/components/codeEditor/CombinedCodeEditor";
+import IdeContainer from "@/components/questions/IdeContainer";
+import QuestionBox from "@/components/questions/QuestionBox";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
 
 export default async function QuestionPage({params}: {params: {slug: number}}) {
@@ -9,9 +10,13 @@ export default async function QuestionPage({params}: {params: {slug: number}}) {
     const question = questions[0];
 
     return(
-        <section className="flex flex-row justify-between">
-            <QuestionBox id={params.slug}/>
-            <IdeContainer editorTypes={["html", "css", "javascript"]} questionId={params.slug}/>
-        </section>
+        <>
+           <div className="flex flex-col justify-between">
+                <QuestionBox id={params.slug}/>
+                <IdeContainer editorTypes={["html", "css", "javascript"]} questionId={params.slug}/>
+                <CombinedCodeEditor/>
+            </div>
+        </>
+     
     )
 }

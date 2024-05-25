@@ -1,5 +1,5 @@
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
-import QuestionCard from "../components/questions/questionCard";
+import QuestionCard from "../../components/questions/QuestionCard";
 
 export const dynamic = "force-dynamic";
 
@@ -8,8 +8,12 @@ export default async function QuestionPage() {
     const questions = await questionRepository.getAll();
 
     return(
-        <main className="">
-            {questions?.map(function (question: any) {return <QuestionCard key={question.id} question={question}/>})}
-        </main>
+        <>
+
+            <div className="flex flex-col gap-y-4">
+                {questions?.map(function (question: any) {return <QuestionCard key={question.id} question={question}/>})}
+            </div>
+        </>
+        
     )
 }
