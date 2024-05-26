@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -6,7 +6,7 @@ import 'codemirror/mode/css/css'
 import 'codemirror/mode/javascript/javascript'
 import { Controlled as ControlledEditor } from 'react-codemirror2'
 
-type CodeEditorProps = {
+interface CodeEditorProps  {
     language: string,
     displayName: string,
     value: string,
@@ -25,16 +25,13 @@ export default function CodeEditor(props : CodeEditorProps) {
     const editor = useRef<any>()
     const [open, setOpen] = useState<boolean>(true)
 
-    function handleChange(editor: any, data: any, value: string) {
+    const handleChange = (editor: any, data: any, value: string) => {
         onChange(value)
     } 
-    const unmountDuplicateEditor = () => {
-        // unmount the duplicate wrapper (Need to force this this as the editor will render twice for no reason)
-        editor.current.display.wrapper.remove()
-    }
+
     return (
         <div className={`w-full ${open ? '' : 'collapsed'} rounded`}>
-            <div className="flex items-center justify-between text-md border-2 border-purple-600 rounded-t-xl bg-white text-black font-medium px-3 py-2">
+            <div className="flex items-center justify-between text-md border-2 border-b-0 border-purple-600 rounded-t-xl bg-white text-black font-medium px-3 py-2">
                 {displayName}
                 <button
                     type="button"
@@ -59,9 +56,6 @@ export default function CodeEditor(props : CodeEditorProps) {
                         theme: 'material',
                         lineNumbers: true
                     }}
-                    // do not delete below 2 lines (needed to stop duplicate code editor renders)
-                    editorDidMount={(e) => editor.current = e}
-                    editorWillUnmount={unmountDuplicateEditor}
                 />
             }
         </div>

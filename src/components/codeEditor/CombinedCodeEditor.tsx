@@ -3,30 +3,31 @@ import React, { useState, useEffect } from 'react'
 import CodeEditor from './CodeEditor'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
-export default function CombinedCodeEditor() {
+interface CombinedCodeEditorProps {
+    question_id: number
+}
 
-    const [html, setHtml] = useLocalStorage('html', '')
-    const [css, setCss] = useLocalStorage('css', '')
-    const [js, setJs] = useLocalStorage('js', '')
+export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorProps) {
+
+    const [html, setHtml] = useLocalStorage('html_qn' + question_id, '')
+    const [css, setCss] = useLocalStorage('css_qn' + question_id, '')
+    const [js, setJs] = useLocalStorage('js_qn' + question_id, '')
     const [srcDoc, setSrcDoc] = useState<string>('')
     // can post this srcDoc as a json payload to our validation service
 
     useEffect (() => {
-        const timeout = setTimeout(() => {
-            setSrcDoc(`
-                <html>
-                    <body>${html}</body>
-                    <style>${css}</style>
-                    <script>${js}</script>
-                </html>
-            `)
-        }, 250)
-        return () => clearTimeout(timeout)
+        setSrcDoc(`
+            <html>
+                <body>${html}</body>
+                <style>${css}</style>
+                <script>${js}</script>
+            </html>
+        `)
     }, [html, css, js])
 
     return (
         <>
-            <div className='flex flex-col gap-y-5 h-screen'>
+            <div className='flex flex-col gap-y-5'>
                 <div className='flex flex-row gap-x-5 flex-1 overflow-y-auto'>
                     <CodeEditor
                         language="xml"
