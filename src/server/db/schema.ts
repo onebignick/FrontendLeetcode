@@ -10,7 +10,8 @@ export const questions = createTable("question", {
     createdAt: timestamp("created_at")
         .default(sql`CURRENT_TIMESTAMP`)
         .notNull(),
-    updatedAt: timestamp("updatedAt")
+    updatedAt: timestamp("updatedAt"),
+    expectedOutput: varchar("expected_output", {length: 10000}).notNull(),
 });
 
 
