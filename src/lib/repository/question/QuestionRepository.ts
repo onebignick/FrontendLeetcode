@@ -14,7 +14,7 @@ export class QuestionRepository implements IBaseRepository<any> {
 
     async get(id: number): Promise<any> {
         const result = await db.select().from(questions).where(eq(questions.id, id));
-        console.log(result)
+        // console.log(result)
         return result
     };
 

@@ -8,11 +8,12 @@ interface CombinedCodeEditorProps {
 }
 
 export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorProps) {
-
+    const API_URL = process.env.NEXT_PUBLIC_FRONTEND_CODE_VALIDATION_SERVICE_API_ENDPOINT
     const [html, setHtml] = useLocalStorage('html_qn' + question_id, '')
     const [css, setCss] = useLocalStorage('css_qn' + question_id, '')
     const [js, setJs] = useLocalStorage('js_qn' + question_id, '')
     const [srcDoc, setSrcDoc] = useState<string>('')
+    const [loadingSubmission, setLoadingSubmission] = useState<boolean>(false)
     // can post this srcDoc as a json payload to our validation service
 
     useEffect (() => {
@@ -24,6 +25,26 @@ export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorPr
             </html>
         `)
     }, [html, css, js])
+
+    const handleSubmit = async () => {
+        try {
+            setLoadingSubmission(true)
+            const response = await fetch(`${API_URL}/process_html/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: srcDoc }),
+            });
+            const data = await response.json();
+            data[""]
+            console.log(data);
+        } catch (error: any) {
+            console.error(error)
+        } finally {
+            setLoadingSubmission(false)
+        }
+    }
 
     return (
         <>
@@ -59,6 +80,9 @@ export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorPr
                             frameBorder="0"
                         />
                     </div>
+                </div>
+                <div className='flex justify-end'>
+                    <button onClick={() => {handleSubmit()}} className='w-1/4 border-2 border-white rounded-lg hover:bg-gray-100 hover:text-black font-medium'>{loadingSubmission ? "Loading..." : "Submit"}</button>
                 </div>
             </div>  
         </>

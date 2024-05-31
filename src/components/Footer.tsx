@@ -8,8 +8,8 @@ export default function Footer() {
         <p className='text-sm font-semibold'>FRONTEND RACERS</p>
         <Image
           src="/logo.png"
-          width={40}
-          height={40}
+          width={30}
+          height={30}
           alt="logo"
         />
       </footer>
