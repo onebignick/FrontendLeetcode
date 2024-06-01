@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
 	return (
@@ -14,7 +15,12 @@ export default function Navbar() {
 
 			<div className="flex gap-x-4 text-lg font-medium">
 				<Link href="/questions">Problems</Link>
-				<Link href="/">Sign in</Link>
+				<SignedOut>
+					<SignInButton/>
+				</SignedOut>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
 			</div>
 		</nav>
 	);
