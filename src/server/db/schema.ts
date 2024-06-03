@@ -1,31 +1,36 @@
 import { sql } from "drizzle-orm";
-import { integer, pgTableCreator, serial, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTableCreator, serial, timestamp, varchar, uuid } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `frontendLeetcode_${name}`)
 
 export const questions = createTable("question", {
-    id: serial("id").primaryKey(),
-    title: varchar("title", {length: 1024}).notNull(),
-    question: varchar("question", {length: 10000}).notNull(),
+    id: uuid("id").defaultRandom().primaryKey(),
+    title: varchar("title", { length: 1024 }).notNull(),
+    question: varchar("question", { length: 10000 }).notNull(),
     createdAt: timestamp("created_at")
         .default(sql`CURRENT_TIMESTAMP`)
         .notNull(),
     updatedAt: timestamp("updatedAt"),
-    expectedOutput: varchar("expected_output", {length: 10000}).notNull(),
+    expectedOutput: varchar("expected_output", { length: 10000 }).notNull(),
 });
 
 
 export const user = createTable("user", {
-    username: varchar("username", {length: 32}).primaryKey()
+    id: uuid("id").defaultRandom().primaryKey(),
+    createdAt: timestamp("created_at")
+        .default(sql`CURRENT_TIMESTAMP`)
+        .notNull(),
+    updatedAt: timestamp("updatedAt"),
+    clerkUserId: varchar("clerkUserId", { length: 32 }).unique(),
 });
 
 
 export const submission = createTable("submission", {
-    id: serial("id").primaryKey(),
-    username: varchar("username", {length: 32}).references(()=>user.username),
-    questionId: integer("question_id").references(()=>questions.id),
-    language: varchar("language", {length: 256}).notNull(),
-    code: varchar("code", {length:10000}).notNull(),
+    id: uuid("id").defaultRandom().primaryKey(),
+    username: uuid("username").references(() => user.id),
+    questionId: uuid("question_id").references(() => questions.id),
+    language: varchar("language", { length: 256 }).notNull(),
+    code: varchar("code", { length: 10000 }).notNull(),
     createdAt: timestamp("created_at")
         .default(sql`CURRENT_TIMESTAMP`)
         .notNull()
