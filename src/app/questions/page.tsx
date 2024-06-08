@@ -7,12 +7,12 @@ export default async function QuestionPage() {
     const questionRepository: QuestionRepository = new QuestionRepository();
     const questions = await questionRepository.getAll();
 
-    return(
+    return (
         <>
             <div className="flex flex-col gap-y-4">
-                {questions?.map((question: any) => (<QuestionCard key={question.id} question={question}/>))}
+                {questions?.map((question: any, index: number) => (<QuestionCard key={question.id} question={question} index={index + 1} />))}
             </div>
         </>
-        
+
     )
 }

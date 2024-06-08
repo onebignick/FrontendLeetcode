@@ -1,19 +1,17 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 interface Props {
     question: Question,
-    index: number
 }
 
 interface Question {
     id: number,
     title: string,
-    description: string,
     question: string,
 }
 
-export default function QuestionCard({ question, index }: Props) {
+export default function QuestionCard({ question }: Props) {
     const router = useRouter()
 
     const handleClick = () => {
@@ -24,9 +22,11 @@ export default function QuestionCard({ question, index }: Props) {
         <>
             <Card onClick={() => { handleClick() }}>
                 <CardHeader>
-                    <CardTitle>{index}. {question.title}</CardTitle>
-                    <CardDescription>{question.description}</CardDescription>
+                    <CardTitle>{question.title}</CardTitle>
                 </CardHeader>
+                <CardContent>
+                    Card Content
+                </CardContent>
             </Card>
         </>
     )
