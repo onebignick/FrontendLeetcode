@@ -11,10 +11,16 @@ export interface Submission {
 }
 
 export class SubmissionRepository implements IBaseRepository<any> {
-    async get(id: number): Promise<any> {
+    async get(id: string): Promise<any> {
         const result = await db.select().from(submission).where(eq(submission.id, id));
         return result;
     };
+
+    async getByUserId(userId: any): Promise<any> {
+        const result = await db.select().from(submission).where(eq(submission.userId, userId.userId));
+        console.log(result);
+        return result;
+    }
 
 
     async getAll(): Promise<any> {

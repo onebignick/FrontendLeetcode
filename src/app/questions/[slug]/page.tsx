@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { auth } from "@clerk/nextjs/server";
+import { SubmissionRepository } from "@/lib/repository/submission/SubmissionRepository";
 
-export default async function QuestionPage({ params }: { params: { slug: number } }) {
+export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
     const questions = await questionRepository.get(params.slug);
     const question = questions[0];
@@ -13,17 +14,7 @@ export default async function QuestionPage({ params }: { params: { slug: number 
 
     return (
         <>
-            <Breadcrumb>
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/questions">Problems</BreadcrumbLink>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+            <QuestionBreadcrumb />
             <Tabs defaultValue="question">
                 <TabsList>
                     <TabsTrigger value="question">Question</TabsTrigger>
@@ -51,8 +42,38 @@ export default async function QuestionPage({ params }: { params: { slug: number 
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>
                 <TabsContent value="discussion">discuss here</TabsContent>
-                <TabsContent value="submission">These are the submission</TabsContent>
+                <TabsContent value="submission"><SubmissionList userId={userId} /></TabsContent>
             </Tabs>
         </>
     )
+}
+
+const QuestionBreadcrumb = () => {
+    return (
+        <Breadcrumb>
+            <BreadcrumbList>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/questions">Problems</BreadcrumbLink>
+                </BreadcrumbItem>
+            </BreadcrumbList>
+        </Breadcrumb>
+    );
+}
+
+const SubmissionList = async (userId: string | null) => {
+    const submissionRepository: SubmissionRepository = new SubmissionRepository();
+    const submissions = await submissionRepository.getByUserId(userId);
+
+    return (
+        <>
+            {
+                submissions?.map((submission: any) => console.log(submission))
+
+            }
+        </>
+    );
 }

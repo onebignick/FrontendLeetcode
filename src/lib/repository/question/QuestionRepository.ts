@@ -12,7 +12,7 @@ export interface IQuestion {
 
 export class QuestionRepository implements IBaseRepository<any> {
 
-    async get(id: number): Promise<any> {
+    async get(id: string): Promise<any> {
         const result = await db.select().from(questions).where(eq(questions.id, id));
         // console.log(result)
         return result
@@ -24,8 +24,8 @@ export class QuestionRepository implements IBaseRepository<any> {
         return result
     };
 
-    
-    create(): any {};
-    update(): any {};
-    delete(): any {};
+
+    create(): any { };
+    update(): any { };
+    delete(): any { };
 }
