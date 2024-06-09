@@ -41,6 +41,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                             />
                         </CardHeader>
                     </Card>
+                    <Separator className="my-4" />
                     <CombinedCodeEditor questionId={params.slug} userId={userId} />
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>

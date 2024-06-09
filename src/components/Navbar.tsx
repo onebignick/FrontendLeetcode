@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from './general/theme-toggle';
 
 export default function Navbar() {
 	return (
@@ -18,6 +19,7 @@ export default function Navbar() {
 				<Button asChild>
 					<Link href="/questions">Problems</Link>
 				</Button>
+				<ModeToggle />
 				<SignedOut>
 					<SignInButton />
 				</SignedOut>
