@@ -41,9 +41,11 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                     <CombinedCodeEditor questionId={params.slug} userId={userId} />
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>
-                <TabsContent value="discussion">discuss here</TabsContent>
+                <TabsContent value="discussion">
+                    <DiscussionList />
+                </TabsContent>
                 <TabsContent value="submission">
-                    <SubmissionList userId={userId} />
+                    <SubmissionList userId={userId} questionId={params.slug} />
                 </TabsContent>
             </Tabs>
         </>
@@ -66,22 +68,27 @@ const QuestionBreadcrumb = () => {
     );
 }
 
-const SubmissionList = async ({ userId }: { userId: string | null }) => {
+const SubmissionList = async ({ userId, questionId }: { userId: string | null, questionId: string }) => {
     const submissionRepository: SubmissionRepository = new SubmissionRepository();
-    const submissions = await submissionRepository.getByUserId(userId);
-
+    const submissions = await submissionRepository.getByUserId(userId, questionId);
     return (
         <>
             {
                 submissions.map((submission: any) => (
-                    <Card>
+                    <Card key={submission.submission.id}>
                         <CardHeader>
-                            <CardTitle>{submission.status}</CardTitle>
-                            <CardDescription>{submission.createdAt.toString()}</CardDescription>
+                            <CardTitle>{submission.status.name}</CardTitle>
+                            <CardDescription>{submission.submission.createdAt.toString()}</CardDescription>
                         </CardHeader>
                     </Card>
                 ))
             }
         </>
+    );
+}
+
+const DiscussionList = async () => {
+    return (
+        <div>Hello this is the discussion list</div>
     );
 }
