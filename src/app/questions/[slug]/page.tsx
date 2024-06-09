@@ -5,6 +5,9 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, Breadc
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { auth } from "@clerk/nextjs/server";
 import { SubmissionRepository } from "@/lib/repository/submission/SubmissionRepository";
+import { QuestionPostRepository } from "@/lib/repository/questionPost/QuestionPostRepository";
+import { DiscussionForm } from "@/components/questions/DiscussionForm";
+import { Separator } from "@/components/ui/separator";
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -42,7 +45,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>
                 <TabsContent value="discussion">
-                    <DiscussionList />
+                    <DiscussionList questionId={params.slug} userId={userId} />
                 </TabsContent>
                 <TabsContent value="submission">
                     <SubmissionList userId={userId} questionId={params.slug} />
@@ -87,8 +90,22 @@ const SubmissionList = async ({ userId, questionId }: { userId: string | null, q
     );
 }
 
-const DiscussionList = async () => {
+const DiscussionList = async ({ userId, questionId }: { userId: string | null, questionId: string }) => {
+    const questionPostRepository: QuestionPostRepository = new QuestionPostRepository();
+    const questionPosts = await questionPostRepository.getByQuestion(questionId);
+
     return (
-        <div>Hello this is the discussion list</div>
+        <>
+            <DiscussionForm userId={userId} questionId={questionId} />
+            <Separator className="my-4" />
+            {questionPosts.map((post: any) => (
+                <Card key={post.id}>
+                    <CardHeader>
+                        <CardTitle>{post.title}</CardTitle>
+                        <CardDescription>{post.authorId} on {post.createdAt.toString()}</CardDescription>
+                    </CardHeader>
+                </Card>
+            ))}
+        </>
     );
 }

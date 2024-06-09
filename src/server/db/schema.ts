@@ -30,6 +30,7 @@ export const questionPost = createTable("questionPost", {
 	questionId: uuid("questionId").references(() => questions.id),
 	title: varchar("title", { length: 256 }).notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
+	votes: integer("votes").default(sql`'0'::integer`).notNull(),
 	createdAt: timestamp("created_at")
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
@@ -58,3 +59,4 @@ export const submission = createTable("submission", {
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
 });
+
