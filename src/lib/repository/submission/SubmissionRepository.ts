@@ -17,8 +17,8 @@ export class SubmissionRepository implements IBaseRepository<any> {
     };
 
     async getByUserId(userId: any): Promise<any> {
-        const result = await db.select().from(submission).where(eq(submission.userId, userId.userId));
-        console.log(result);
+        console.log(userId);
+        const result = await db.select().from(submission).where(eq(submission.userId, userId));
         return result;
     }
 

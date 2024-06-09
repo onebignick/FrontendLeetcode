@@ -1,6 +1,6 @@
 import CombinedCodeEditor from "@/components/codeEditor/CombinedCodeEditor";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { auth } from "@clerk/nextjs/server";
@@ -42,7 +42,9 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>
                 <TabsContent value="discussion">discuss here</TabsContent>
-                <TabsContent value="submission"><SubmissionList userId={userId} /></TabsContent>
+                <TabsContent value="submission">
+                    <SubmissionList userId={userId} />
+                </TabsContent>
             </Tabs>
         </>
     )
@@ -64,15 +66,21 @@ const QuestionBreadcrumb = () => {
     );
 }
 
-const SubmissionList = async (userId: string | null) => {
+const SubmissionList = async ({ userId }: { userId: string | null }) => {
     const submissionRepository: SubmissionRepository = new SubmissionRepository();
     const submissions = await submissionRepository.getByUserId(userId);
 
     return (
         <>
             {
-                submissions?.map((submission: any) => console.log(submission))
-
+                submissions.map((submission: any) => (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{submission.status}</CardTitle>
+                            <CardDescription>{submission.createdAt.toString()}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                ))
             }
         </>
     );
