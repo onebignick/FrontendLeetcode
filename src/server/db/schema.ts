@@ -52,7 +52,7 @@ export const submission = createTable("submission", {
 	questionId: uuid("question_id").references(() => questions.id),
 	language: varchar("language", { length: 256 }).notNull(),
 	code: varchar("code", { length: 10000 }).notNull(),
-	status: uuid("status").default(sql`'6c9dd519-46be-4ddc-bc80-700b66bdd5db'::uuid`).references(() => status.id),
+	status: uuid("status").default(sql`'680af830-5898-4cc0-b7eb-21c7ad1ed591'::uuid`).references(() => status.id),
 	result: uuid("result").references(() => result.id),
 	createdAt: timestamp("created_at")
 		.default(sql`CURRENT_TIMESTAMP`)

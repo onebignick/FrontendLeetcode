@@ -15,14 +15,15 @@ export async function POST(request: Request) {
 		}
 		let user = null;
 		switch (event.type) {
+			case "session.created": {
+				break;
+			};
 			case "user.created": {
 				user = await userRepository.create(clerkUserId);
-				console.log(user);
 				break;
 			}
 			case "user.deleted": {
 				user = await userRepository.delete(clerkUserId);
-				console.log(user);
 				break;
 			}
 			case "user.updated": {

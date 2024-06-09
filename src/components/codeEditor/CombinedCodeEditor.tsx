@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import CodeEditor from './CodeEditor'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CombinedCodeEditorProps {
     questionId: string,
@@ -15,6 +17,7 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
     const [js, setJs] = useLocalStorage('js_qn' + questionId, '')
     const [srcDoc, setSrcDoc] = useState<string>('')
     const [loadingSubmission, setLoadingSubmission] = useState<boolean>(false)
+    const { toast } = useToast();
 
     // can post this srcDoc as a json payload to our validation service
 
@@ -29,37 +32,33 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
     }, [html, css, js])
 
     const handleSubmit = async () => {
-        if (userId) {
-            try {
-                setLoadingSubmission(true);
-                const response = await fetch("/api/createSubmission", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        userId: userId,
-                        questionId: questionId,
-                        language: "html/css/javascript",
-                        code: srcDoc
-                    })
-                });
-                console.log(response.json());
-                //          const response = await fetch(`${API_URL}/process_html/`, {
-                //              method: 'POST',
-                //              headers: {
-                //                  'Content-Type': 'application/json',
-                //              },
-                //              body: JSON.stringify({ content: srcDoc }),
-                //          });
-                //          const data = await response.json();
-                //          data[""]
-                //          console.log(data);
-            } catch (error: any) {
-                console.error(error)
-            } finally {
-                setLoadingSubmission(false)
-            }
-        } else {
-            console.log("Please log in");
+        try {
+            setLoadingSubmission(true);
+            const response = await fetch("/api/createSubmission", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: userId,
+                    questionId: questionId,
+                    language: "html/css/javascript",
+                    code: srcDoc
+                })
+            });
+            console.log(response.json());
+            //          const response = await fetch(`${API_URL}/process_html/`, {
+            //              method: 'POST',
+            //              headers: {
+            //                  'Content-Type': 'application/json',
+            //              },
+            //              body: JSON.stringify({ content: srcDoc }),
+            //          });
+            //          const data = await response.json();
+            //          data[""]
+            //          console.log(data);
+        } catch (error: any) {
+            console.error(error)
+        } finally {
+            setLoadingSubmission(false)
         }
     }
 
@@ -98,7 +97,9 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                     </div>
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={() => { handleSubmit() }} className='w-1/4 border-2 border-white rounded-lg hover:bg-gray-100 hover:text-black font-medium'>{loadingSubmission ? "Loading..." : "Submit"}</button>
+                    <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please log in before submitting" }) }}>
+                        Submit
+                    </Button>
                 </div>
             </div>
         </>
