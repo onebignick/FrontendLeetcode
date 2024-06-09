@@ -4,10 +4,10 @@ import { submission } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export interface Submission {
-    username: string,
+    userId: string,
     questionId: number,
     language: string,
-    code: string
+    code: string,
 }
 
 export class SubmissionRepository implements IBaseRepository<any> {
@@ -29,15 +29,15 @@ export class SubmissionRepository implements IBaseRepository<any> {
         const result = await db
             .insert(submission)
             .values({
-                username: newSubmission.username,
+                userId: newSubmission.userId,
                 questionId: newSubmission.questionId,
                 language: newSubmission.language,
-                code: newSubmission.code
+                code: newSubmission.code,
             })
             .returning();
         return result;
     };
 
-    async update(): Promise<any> {};
-    async delete(): Promise<any> {};
+    async update(): Promise<any> { };
+    async delete(): Promise<any> { };
 }

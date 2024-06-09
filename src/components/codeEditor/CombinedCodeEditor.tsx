@@ -4,19 +4,21 @@ import CodeEditor from './CodeEditor'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 interface CombinedCodeEditorProps {
-    question_id: number
+    questionId: string,
+    userId: string | null
 }
 
-export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorProps) {
+export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeEditorProps) {
     const API_URL = process.env.NEXT_PUBLIC_FRONTEND_CODE_VALIDATION_SERVICE_API_ENDPOINT
-    const [html, setHtml] = useLocalStorage('html_qn' + question_id, '')
-    const [css, setCss] = useLocalStorage('css_qn' + question_id, '')
-    const [js, setJs] = useLocalStorage('js_qn' + question_id, '')
+    const [html, setHtml] = useLocalStorage('html_qn' + questionId, '')
+    const [css, setCss] = useLocalStorage('css_qn' + questionId, '')
+    const [js, setJs] = useLocalStorage('js_qn' + questionId, '')
     const [srcDoc, setSrcDoc] = useState<string>('')
     const [loadingSubmission, setLoadingSubmission] = useState<boolean>(false)
+
     // can post this srcDoc as a json payload to our validation service
 
-    useEffect (() => {
+    useEffect(() => {
         setSrcDoc(`
             <html>
                 <body>${html}</body>
@@ -27,22 +29,37 @@ export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorPr
     }, [html, css, js])
 
     const handleSubmit = async () => {
-        try {
-            setLoadingSubmission(true)
-            const response = await fetch(`${API_URL}/process_html/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ content: srcDoc }),
-            });
-            const data = await response.json();
-            data[""]
-            console.log(data);
-        } catch (error: any) {
-            console.error(error)
-        } finally {
-            setLoadingSubmission(false)
+        if (userId) {
+            try {
+                setLoadingSubmission(true);
+                const response = await fetch("/api/createSubmission", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userId: userId,
+                        questionId: questionId,
+                        language: "html/css/javascript",
+                        code: srcDoc
+                    })
+                });
+                console.log(response.json());
+                //          const response = await fetch(`${API_URL}/process_html/`, {
+                //              method: 'POST',
+                //              headers: {
+                //                  'Content-Type': 'application/json',
+                //              },
+                //              body: JSON.stringify({ content: srcDoc }),
+                //          });
+                //          const data = await response.json();
+                //          data[""]
+                //          console.log(data);
+            } catch (error: any) {
+                console.error(error)
+            } finally {
+                setLoadingSubmission(false)
+            }
+        } else {
+            console.log("Please log in");
         }
     }
 
@@ -77,14 +94,13 @@ export default function CombinedCodeEditor({ question_id }: CombinedCodeEditorPr
                             srcDoc={srcDoc}
                             title="output"
                             sandbox="allow-scripts"
-                            frameBorder="0"
                         />
                     </div>
                 </div>
                 <div className='flex justify-end'>
-                    <button onClick={() => {handleSubmit()}} className='w-1/4 border-2 border-white rounded-lg hover:bg-gray-100 hover:text-black font-medium'>{loadingSubmission ? "Loading..." : "Submit"}</button>
+                    <button onClick={() => { handleSubmit() }} className='w-1/4 border-2 border-white rounded-lg hover:bg-gray-100 hover:text-black font-medium'>{loadingSubmission ? "Loading..." : "Submit"}</button>
                 </div>
-            </div>  
+            </div>
         </>
     )
 }

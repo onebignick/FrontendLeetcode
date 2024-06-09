@@ -5,8 +5,8 @@ import { eq } from "drizzle-orm";
 
 export class UserRepository implements IBaseRepository<any> {
 
-    async get(id: string): Promise<any> {
-        const result = await db.select().from(user).where(eq(user.id, id));
+    async get(clerkUserId: string): Promise<any> {
+        const result = await db.select().from(user).where(eq(user.id, clerkUserId));
         return result
     };
 
@@ -19,7 +19,7 @@ export class UserRepository implements IBaseRepository<any> {
 
     async create(clerkUserId: string): Promise<any> {
         const result = await db.insert(user)
-            .values({ clerkUserId: clerkUserId })
+            .values({ id: clerkUserId })
             .onConflictDoNothing();
         return result;
     };
@@ -32,7 +32,7 @@ export class UserRepository implements IBaseRepository<any> {
 
     async delete(clerkUserId: string): Promise<any> {
         const result = await db.delete(user)
-            .where(eq(user.clerkUserId, clerkUserId));
+            .where(eq(user.id, clerkUserId));
         return result;
     };
 }

@@ -3,11 +3,13 @@ import { QuestionRepository } from "@/lib/repository/question/QuestionRepository
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { auth } from "@clerk/nextjs/server";
 
 export default async function QuestionPage({ params }: { params: { slug: number } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
     const questions = await questionRepository.get(params.slug);
     const question = questions[0];
+    const { userId } = auth();
 
     return (
         <>
@@ -45,7 +47,7 @@ export default async function QuestionPage({ params }: { params: { slug: number 
                             />
                         </CardHeader>
                     </Card>
-                    <CombinedCodeEditor question_id={params.slug} />
+                    <CombinedCodeEditor questionId={params.slug} userId={userId} />
                 </TabsContent>
                 <TabsContent value="solution">{question.expectedOutput}</TabsContent>
                 <TabsContent value="discussion">discuss here</TabsContent>
