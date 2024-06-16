@@ -45,16 +45,14 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                 })
             });
             console.log(response.json());
-            //          const response = await fetch(`${API_URL}/process_html/`, {
-            //              method: 'POST',
-            //              headers: {
-            //                  'Content-Type': 'application/json',
-            //              },
-            //              body: JSON.stringify({ content: srcDoc }),
-            //          });
-            //          const data = await response.json();
-            //          data[""]
-            //          console.log(data);
+            const res = await fetch(`${API_URL}/process_html/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: srcDoc }),
+            });
+            console.log(res.json())
         } catch (error: any) {
             console.error(error)
         } finally {
