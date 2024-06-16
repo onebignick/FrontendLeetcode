@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/material.css'
-import 'codemirror/mode/xml/xml'
-import 'codemirror/mode/css/css'
-import 'codemirror/mode/javascript/javascript'
-import { Controlled as ControlledEditor } from 'react-codemirror2'
+import React, { useState, useRef } from 'react'
+
+import MonacoEditor from 'react-monaco-editor'
 
 interface CodeEditorProps  {
     language: string,
@@ -45,18 +41,18 @@ export default function CodeEditor(props : CodeEditorProps) {
                 </button>
             </div>
             {open &&
-                <ControlledEditor
-                    onBeforeChange={handleChange}
-                    value={value}
-                    className="border-2 border-t-0 border-white rounded-b-sm"
-                    options={{
-                        lineWrapping: true,
-                        lint: true,
-                        mode: language,
-                        theme: 'material',
-                        lineNumbers: true
-                    }}
-                />
+            <MonacoEditor
+                // width="800"
+                height="600"
+                language={language}
+                theme="vs-dark"
+                value={value}
+                onChange={onChange}
+                options={{
+                    selectOnLineNumbers: true,
+                    automaticLayout: true,
+                }}
+            />
             }
         </div>
     )
