@@ -16,6 +16,8 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
     const [css, setCss] = useLocalStorage('css_qn' + questionId, '')
     const [js, setJs] = useLocalStorage('js_qn' + questionId, '')
     const [srcDoc, setSrcDoc] = useState<string>('')
+    const [validationOutcome, setValidationOutcome] = useState<boolean>()
+    const [validationErrorMessage, setValidationErrorMessage] = useState<string>()
     const [loadingSubmission, setLoadingSubmission] = useState<boolean>(false)
     const { toast } = useToast();
 
@@ -52,7 +54,13 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                 },
                 body: JSON.stringify({ content: srcDoc }),
             });
-            console.log(res.json())
+            const jsonResponse = await res.json();
+            // console.log(jsonResponse);
+            const validationOutcomeObject = jsonResponse.validation_outcome
+            setValidationOutcome(validationOutcomeObject.isCorrectSolution)
+            if (validationOutcomeObject.isCorrectSolution === false) {
+                setValidationErrorMessage(validationOutcomeObject.error_message)
+            }
         } catch (error: any) {
             console.error(error)
         } finally {
@@ -98,6 +106,22 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                     <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please log in before submitting" }) }}>
                         Submit
                     </Button>
+                </div>
+                <div>
+                    {(validationOutcome === false) && (
+                        <div>
+                            <h1 className='text-xl font-bold'>Validation Failed</h1>
+                            <h2 className='text-lg font-medium'>Error StackTrace:</h2>
+                            <p>{validationErrorMessage}</p>
+                        </div>
+                        
+                    )}
+                    {(validationOutcome === true) && (
+                        <div>
+                            <h1 className='text-xl font-bold'>Validation Successful!</h1>
+                            <h2 className='text-lg font-medium'>Good Job!</h2>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
