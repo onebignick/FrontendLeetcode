@@ -25,7 +25,9 @@ export default function QuestionCard({ question, index }: Props) {
             <Card onClick={() => { handleClick() }}>
                 <CardHeader>
                     <CardTitle>{index}. {question.title}</CardTitle>
-                    <CardDescription>{question.description}</CardDescription>
+                        <CardDescription>
+                            {question.description}
+                        </CardDescription>
                 </CardHeader>
             </Card>
         </>

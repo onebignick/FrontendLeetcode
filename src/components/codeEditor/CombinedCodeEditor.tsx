@@ -93,9 +93,9 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                 </div>
                 <div className='flex flex-col'>
                     <h1 className='text-xl font-medium pb-2'>Output:</h1>
-                    <div className='bg-white rounded-xl flex-1 min-h-96 h-full'>
+                    <div className='bg-white flex-1 min-h-fit rounded-lg'>
                         <iframe
-                            className='w-full h-full'
+                            className='w-full h-[500px] overflow-auto '
                             srcDoc={srcDoc}
                             title="output"
                             sandbox="allow-scripts"
@@ -109,7 +109,7 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                 </div>
                 <div>
                     {(validationOutcome === false) && (
-                        <div>
+                        <div className='border-2 border-white p-2 rounded-lg'>
                             <h1 className='text-xl font-bold'>Validation Failed</h1>
                             <h2 className='text-lg font-medium'>Error StackTrace:</h2>
                             <p>{validationErrorMessage}</p>
@@ -117,7 +117,7 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                         
                     )}
                     {(validationOutcome === true) && (
-                        <div>
+                        <div className='border-2 border-white p-2 rounded-lg'>
                             <h1 className='text-xl font-bold'>Validation Successful!</h1>
                             <h2 className='text-lg font-medium'>Good Job!</h2>
                         </div>

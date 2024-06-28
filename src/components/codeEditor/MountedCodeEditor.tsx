@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import CombinedCodeEditor from "./CombinedCodeEditor.tsx";
+import CombinedCodeEditor from "./CombinedCodeEditor";
 
 interface Props {
     questionId: number
@@ -13,5 +13,5 @@ export function MountedCodeEditor({questionId}: Props) {
         setIsMounted(true);
     }, []);
 
-    return isMounted ? <CombinedCodeEditor question_id={questionId}/> : "hello world"; 
+    return isMounted ? <CombinedCodeEditor questionId={questionId.toString()} userId={"test"}/> : "hello world"; 
 }

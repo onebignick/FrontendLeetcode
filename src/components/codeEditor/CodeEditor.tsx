@@ -1,12 +1,12 @@
+"use client"
 import React, { useState, useRef } from 'react'
-
 import MonacoEditor from 'react-monaco-editor'
 
 interface CodeEditorProps  {
     language: string,
     displayName: string,
     value: string,
-    onChange: (value: string) => void
+    onChange?: (value: string) => void
 }
 
 export default function CodeEditor(props : CodeEditorProps) {
@@ -22,7 +22,9 @@ export default function CodeEditor(props : CodeEditorProps) {
     const [open, setOpen] = useState<boolean>(true)
 
     const handleChange = (editor: any, data: any, value: string) => {
-        onChange(value)
+        if (onChange) {
+            onChange(value)
+        }
     } 
 
     return (
