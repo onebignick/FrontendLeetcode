@@ -1,9 +1,22 @@
+"use client"
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from './general/theme-toggle';
+
+const DotIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 512 512"
+			fill="currentColor"
+		>
+			<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+		</svg>
+	)
+}
 
 export default function Navbar() {
 	return (
@@ -24,7 +37,17 @@ export default function Navbar() {
 					<SignInButton />
 				</SignedOut>
 				<SignedIn>
-					<UserButton />
+					<UserButton>
+						<UserButton.UserProfilePage
+							label="My Stats"
+							labelIcon={<DotIcon />}
+							url="stats"
+						>
+							<div>Hello world!</div>
+						</UserButton.UserProfilePage>
+						<UserButton.UserProfilePage label="account" />
+						<UserButton.UserProfilePage label="security" />
+					</UserButton>
 				</SignedIn>
 			</div>
 		</nav>

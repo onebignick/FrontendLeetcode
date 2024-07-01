@@ -37,7 +37,6 @@ export class SubmissionRepository implements IBaseRepository<any> {
 
     async create(newSubmission: Submission): Promise<any> {
         "use server"
-        console.log("hello world")
         const result = await db
             .insert(submission)
             .values({
@@ -47,7 +46,7 @@ export class SubmissionRepository implements IBaseRepository<any> {
                 code: newSubmission.code,
             })
             .returning();
-        return result;
+        return result[0];
     };
 
     async update(): Promise<any> { };

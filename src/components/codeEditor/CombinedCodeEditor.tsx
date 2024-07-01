@@ -46,21 +46,19 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                     code: srcDoc
                 })
             });
-            console.log(response.json());
-            const res = await fetch(`${API_URL}/process_html/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ content: srcDoc }),
-            });
-            const jsonResponse = await res.json();
-            // console.log(jsonResponse);
-            const validationOutcomeObject = jsonResponse.validation_outcome
-            setValidationOutcome(validationOutcomeObject.isCorrectSolution)
-            if (validationOutcomeObject.isCorrectSolution === false) {
-                setValidationErrorMessage(validationOutcomeObject.error_message)
-            }
+            const newObject = await response.json()
+            //            const res = await fetch(`${API_URL}/process_html`, {
+            //                method: "POST",
+            //                headers: { "Content-Type": "application/json" },
+            //                body: JSON.stringify(newObject)
+            //            });
+            //            const jsonResponse = await res.json();
+            //            console.log(jsonResponse);
+            //            const validationOutcomeObject = jsonResponse.validation_outcome
+            //            setValidationOutcome(validationOutcomeObject.isCorrectSolution)
+            //            if (validationOutcomeObject.isCorrectSolution === false) {
+            //               setValidationErrorMessage(validationOutcomeObject.error_message)
+            //            }
         } catch (error: any) {
             console.error(error)
         } finally {
@@ -114,7 +112,7 @@ export default function CombinedCodeEditor({ questionId, userId }: CombinedCodeE
                             <h2 className='text-lg font-medium'>Error StackTrace:</h2>
                             <p>{validationErrorMessage}</p>
                         </div>
-                        
+
                     )}
                     {(validationOutcome === true) && (
                         <div className='border-2 border-white p-2 rounded-lg'>
