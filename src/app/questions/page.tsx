@@ -1,10 +1,9 @@
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
-import QuestionCard from "../../components/questions/QuestionCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-
-// export const dynamic = "force-dynamic";
+import { DataTable } from "./questionsTable";
+import { columns } from "./questionsColumns";
 
 export default async function QuestionPage() {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -20,7 +19,7 @@ export default async function QuestionPage() {
                     </Button>
                 </AlertTitle>
             </Alert>
-            {questions?.map((question: any, index: number) => (<QuestionCard key={question.id} question={question} index={index + 1} />))}
+            <DataTable columns={columns} data={questions} />
         </div>
     )
 }

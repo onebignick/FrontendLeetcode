@@ -6,7 +6,10 @@ import { eq } from "drizzle-orm";
 export interface IQuestion {
     id: string;
     title: string;
+    description: string;
     question: string;
+    createdAt: Date;
+    updatedAt: Date;
     expectedOutput: string;
 }
 
