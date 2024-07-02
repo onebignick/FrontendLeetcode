@@ -8,6 +8,8 @@ import { SubmissionRepository } from "@/lib/repository/submission/SubmissionRepo
 import { QuestionPostRepository } from "@/lib/repository/questionPost/QuestionPostRepository";
 import { DiscussionForm } from "@/components/questions/DiscussionForm";
 import { Separator } from "@/components/ui/separator";
+import { DataTable } from "./submissionTable";
+import { columns } from "./submissionColumns";
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -94,16 +96,7 @@ const SubmissionList = async ({ userId, questionId }: { userId: string | null, q
     const submissions = await submissionRepository.getByUserId(userId, questionId);
     return (
         <>
-            {
-                submissions.map((submission: any) => (
-                    <Card key={submission.submission.id}>
-                        <CardHeader>
-                            <CardTitle>{submission.status.name}</CardTitle>
-                            <CardDescription>{submission.submission.createdAt.toString()}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                ))
-            }
+            <DataTable columns={columns} data={submissions} />
         </>
     );
 }

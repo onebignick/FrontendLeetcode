@@ -4,11 +4,14 @@ import { Editor } from "@monaco-editor/react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
+const defaultValues = {
+    "html": "<html>\n<head>\n\t<style>\n\t</style>\n</head>\n<body>\n</body>\n</html>"
+}
 
 const CodeEditor = ({ questionId, userId }) => {
     const editorRef = useRef();
-    const [value, setValue] = useState("");
     const [language, setLanguage] = useState("html");
+    const [value, setValue] = useState(defaultValues[language]);
     const { toast } = useToast();
 
     const onMount = (editor) => {
@@ -40,6 +43,7 @@ const CodeEditor = ({ questionId, userId }) => {
                 }}
                 height="75vh"
                 theme="vs-dark"
+                value={value}
                 language={language}
                 onMount={onMount}
                 onChange={(value) => setValue(value)}
