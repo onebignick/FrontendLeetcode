@@ -1,6 +1,5 @@
-import CombinedCodeEditor from "@/components/codeEditor/CombinedCodeEditor";
-import CodeEditor from "@/components/codeEditor/CodeEditor";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
+import CodeEditor from "./codeEditor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -9,7 +8,6 @@ import { SubmissionRepository } from "@/lib/repository/submission/SubmissionRepo
 import { QuestionPostRepository } from "@/lib/repository/questionPost/QuestionPostRepository";
 import { DiscussionForm } from "@/components/questions/DiscussionForm";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -44,20 +42,14 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         </CardHeader>
                     </Card>
                     <Separator className="my-4" />
-                    <CombinedCodeEditor questionId={params.slug} userId={userId} />
+                    <CodeEditor questionId={question.id} userId={userId} />
                 </TabsContent>
                 <TabsContent value="solution">
                     {/* {question.expectedOutput} */}
                     <div className="flex flex-col lg:flex-row gap-x-5">
                         <div className="w-1/2">
-                            <CodeEditor
-                                language="html"
-                                displayName="Solution Code:"
-                                value={question.expectedOutput}
-                                // onChange={setHtml}
-                            />
                         </div>
-                        
+
                         <div className="flex flex-col w-1/2 gap-y-5">
                             <h1 className="text-lg lg:text-xl">Expected Solution Behaviour:</h1>
                             <iframe
@@ -67,7 +59,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                                 sandbox="allow-scripts"
                             />
                         </div>
-                        
+
                     </div>
                 </TabsContent>
                 <TabsContent value="discussion">

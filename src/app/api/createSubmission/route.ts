@@ -7,7 +7,7 @@ const submissionRepository: SubmissionRepository = new SubmissionRepository();
 export async function POST(request: Request) {
     const data = await request.json();
     const response = await submissionRepository.create(data);
-    const validation_service_response = await fetch(`${apiUrl}/process_html`, {
+    const validation_service_response = await fetch(`${apiUrl}/submission`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(response)
