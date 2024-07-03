@@ -33,6 +33,11 @@ export const columns: ColumnDef<SubmissionQuery>[] = [
     {
         accessorKey: "submission.createdAt",
         header: "Time Submitted",
+        cell: ({ row }) => {
+            return (
+                <div>{row.original.submission.createdAt.toLocaleDateString()} {row.original.submission.createdAt.toLocaleTimeString()}</div>
+            )
+        }
     },
     {
         accessorKey: "result.name",

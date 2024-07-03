@@ -31,31 +31,36 @@ const CodeEditor = ({ questionId, userId }) => {
             })
         })
         console.log(await response.json())
+        toast({ description: "Submission Received! We are processing it." })
     }
 
     return (
         <>
-            <Editor
-                options={{
-                    minimap: {
-                        enabled: false,
-                    },
-                }}
-                height="75vh"
-                theme="vs-dark"
-                value={value}
-                language={language}
-                onMount={onMount}
-                onChange={(value) => setValue(value)}
-            />
-            <div className="flex flex-col gap-y-5">
-                <h1 className="text-lg lg:text-xl">Output</h1>
-                <iframe
-                    className='bg-white rounded-lg h-full'
-                    srcDoc={value}
-                    title="output"
-                    sandbox="allow-scripts"
-                />
+            <div className="flex flex-wrap flex-row gap-4 justify-items-stretch">
+                <div className="w-1/2 grow">
+                    <Editor
+                        options={{
+                            minimap: {
+                                enabled: false,
+                            },
+                        }}
+                        height="75vh"
+                        theme="vs-dark"
+                        value={value}
+                        language={language}
+                        onMount={onMount}
+                        onChange={(value) => setValue(value)}
+                    />
+                </div>
+                <div className="flex flex-col gap-y-5 grow">
+                    <h1 className="text-lg lg:text-xl w-full">Output</h1>
+                    <iframe
+                        className='bg-white rounded-lg h-full w-full'
+                        srcDoc={value}
+                        title="output"
+                        sandbox="allow-scripts"
+                    />
+                </div>
             </div>
             <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please logi n before submitting" }) }}>
                 Submit
