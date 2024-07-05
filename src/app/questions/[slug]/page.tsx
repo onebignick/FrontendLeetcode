@@ -39,7 +39,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                                 className='w-full bg-white rounded-lg overflow-y-auto'
                                 srcDoc={question.expectedOutput}
                                 title="output"
-                                sandbox="allow-scripts"
+                                sandbox="allow-scripts allow-forms"
                             />
                         </CardHeader>
                     </Card>

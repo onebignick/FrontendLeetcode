@@ -1,5 +1,5 @@
 "use client"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,6 +13,26 @@ const CodeEditor = ({ questionId, userId }) => {
     const [language, setLanguage] = useState("html");
     const [value, setValue] = useState(defaultValues[language]);
     const { toast } = useToast();
+    const [windowWidth, setWindowWidth] = useState();
+    const [isLargeViewport, setIsLargeViewport] = useState(true);
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            if (window.innerWidth >= 1024) {
+                setIsLargeViewport(true);
+            } else {
+                setIsLargeViewport(false);
+            }
+            setTimeout(() => {
+                setWindowWidth(window.innerWidth);
+            }, 500);
+        }
+        window.addEventListener("resize", handleWindowResize);
+
+        return () => {
+            window.removeEventListener("resize", handleWindowResize);
+        }
+    });
 
     const onMount = (editor) => {
         editorRef.current = editor;
@@ -36,15 +56,20 @@ const CodeEditor = ({ questionId, userId }) => {
 
     return (
         <>
-            <div className="flex flex-wrap flex-row gap-4 justify-items-stretch">
-                <div className="w-1/2 grow">
+            <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex flex-col w-full lg:w-1/2 h-1/2 lg:h-fit">
+                    <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-xl">
+                        <div className="font-bold">{`</>`}</div>
+                        <div className="font-semibold text-xl">Code</div>
+                    </div>
                     <Editor
+                        key = {windowWidth}
                         options={{
                             minimap: {
                                 enabled: false,
                             },
                         }}
-                        height="75vh"
+                        height="65vh"
                         theme="vs-dark"
                         value={value}
                         language={language}
@@ -52,19 +77,23 @@ const CodeEditor = ({ questionId, userId }) => {
                         onChange={(value) => setValue(value)}
                     />
                 </div>
-                <div className="flex flex-col gap-y-5 grow">
-                    <h1 className="text-lg lg:text-xl w-full">Output</h1>
+                <div className="flex flex-col w-full lg:w-1/2">
+                    <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-xl">
+                        <div className="font-semibold text-xl">Output</div>
+                    </div>
                     <iframe
-                        className='bg-white rounded-lg h-full w-full'
+                        className={`bg-white w-full overflow-y-auto ${(isLargeViewport) ? 'h-full' : 'h-[500px]'}`}
                         srcDoc={value}
                         title="output"
-                        sandbox="allow-scripts"
+                        sandbox="allow-scripts allow-forms"
                     />
                 </div>
             </div>
-            <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please logi n before submitting" }) }}>
-                Submit
-            </Button>
+            <div className="flex justify-end py-2">
+                <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please login before submitting" }) }}>
+                    Submit
+                </Button>
+            </div>
         </>
     );
 };
