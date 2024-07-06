@@ -32,7 +32,10 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         <CardHeader>
                             <CardTitle>{question.title}</CardTitle>
                         </CardHeader>
-                        <CardContent>{question.question}</CardContent>
+                        <CardContent>
+                            <div dangerouslySetInnerHTML={{__html: question.question}}>
+                            </div>
+                        </CardContent>
                         <CardHeader>
                             <CardTitle>Expected Output:</CardTitle>
                             <iframe
@@ -50,8 +53,8 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                     {/* {question.expectedOutput} */}
                     <div className="flex flex-col lg:flex-row gap-x-5">
                         <div className="w-1/2">
+                            Insert Solution Code here
                         </div>
-
                         <div className="flex flex-col w-1/2 gap-y-5">
                             <h1 className="text-lg lg:text-xl">Expected Solution Behaviour:</h1>
                             <iframe
