@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import CodeEditor from './CodeEditor'
-import useLocalStorage from '../../hooks/useLocalStorage'
+import { useLocalStorage } from 'usehooks-ts'
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 

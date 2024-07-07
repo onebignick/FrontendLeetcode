@@ -1,5 +1,6 @@
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
 import CodeEditor from "./codeEditor";
+import SolutionDisplayCodeEditor from "@/components/codeEditor/SolutionDisplayCodeEditor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -53,6 +54,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                     {/* {question.expectedOutput} */}
                     <div className="flex flex-col lg:flex-row gap-x-5">
                         <div className="w-1/2">
+                        {/* <SolutionDisplayCodeEditor language="html" displayName="Solution Code" value={question.expectedOutput}/> */}
                             Insert Solution Code here
                         </div>
                         <div className="flex flex-col w-1/2 gap-y-5">
@@ -61,7 +63,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                                 className='bg-white rounded-lg h-full'
                                 srcDoc={question.expectedOutput}
                                 title="output"
-                                sandbox="allow-scripts"
+                                sandbox="allow-scripts allow-forms"
                             />
                         </div>
 

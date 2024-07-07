@@ -3,15 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useLocalStorage } from 'usehooks-ts';
 
 const defaultValues = {
-    "html": "<html>\n<head>\n\t<style>\n\t</style>\n</head>\n<body>\n</body>\n</html>"
+    "html": "<html>\n<head>\n\t<style>\n\t\t/* write your CSS code here */\n\t</style>\n</head>\n<body>\n\t<!-- Write your HTML code here -->\n\t<script>\n\t\t// write your Javascript code here\n\t</script>\n</body>\n</html>"
 }
 
 const CodeEditor = ({ questionId, userId }) => {
     const editorRef = useRef();
     const [language, setLanguage] = useState("html");
-    const [value, setValue] = useState(defaultValues[language]);
+    const [value, setValue] = useLocalStorage("userCodeForQuestion-" + questionId, defaultValues[language]);
     const { toast } = useToast();
     const [windowWidth, setWindowWidth] = useState();
     const [isLargeViewport, setIsLargeViewport] = useState(true);
