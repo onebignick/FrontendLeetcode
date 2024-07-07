@@ -22,7 +22,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
         <>
             <QuestionBreadcrumb />
             <Tabs defaultValue="question">
-                <TabsList>
+                <TabsList className="my-3">
                     <TabsTrigger value="question">Question</TabsTrigger>
                     <TabsTrigger value="solution">Solution</TabsTrigger>
                     <TabsTrigger value="discussion">Discussion</TabsTrigger>
@@ -52,15 +52,14 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                 </TabsContent>
                 <TabsContent value="solution">
                     {/* {question.expectedOutput} */}
-                    <div className="flex flex-col lg:flex-row gap-x-5">
-                        <div className="w-1/2">
-                        {/* <SolutionDisplayCodeEditor language="html" displayName="Solution Code" value={question.expectedOutput}/> */}
-                            Insert Solution Code here
+                    <div className="flex flex-col lg:flex-row gap-x-5 gap-y-5 ">
+                        <div className="lg:w-1/2">
+                            <SolutionDisplayCodeEditor language="html" displayName="Solution Code" value={question.expectedOutput}/>
                         </div>
-                        <div className="flex flex-col w-1/2 gap-y-5">
-                            <h1 className="text-lg lg:text-xl">Expected Solution Behaviour:</h1>
+                        <div className="flex flex-col lg:w-1/2">
+                            <h1 className="text-lg lg:text-xl py-2 font-semibold">Expected Behaviour:</h1>
                             <iframe
-                                className='bg-white rounded-lg h-full'
+                                className='bg-white rounded-lg lg:h-[586px]'
                                 srcDoc={question.expectedOutput}
                                 title="output"
                                 sandbox="allow-scripts allow-forms"

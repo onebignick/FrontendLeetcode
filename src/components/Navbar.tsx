@@ -23,7 +23,7 @@ export default function Navbar() {
 		<nav className="flex w-full items-center justify-between p-4 px-6 border-b-2">
 			<Link href="/">
 				<div className="flex flex-row items-center">
-					<Image src="/logo.png" width={30} height={30} alt="logo" className='mx-2' />
+					<Image src="/logo.png" width={45} height={45} alt="logo" className='mx-2' />
 					<h1 className="text-xl font-semibold">FRONTEND RACERS</h1>
 				</div>
 			</Link>
