@@ -29,6 +29,9 @@ export default function SolutionDisplayCodeEditor(props : SolutionDisplayCodeEdi
                     parser: 'html',
                     plugins: [parserHtml],
                 });
+                // formatted = formatted.replaceAll("                ", "\n\t\t\t\t");
+                // formatted = formatted.replaceAll("            ", "\n\t\t\t");
+                // formatted = formatted.replaceAll("        ", "\n\t\t");
                 formatted = formatted.replaceAll("                 ", "\n\t\t\t\t");
                 formatted = formatted.replaceAll("             ", "\n\t\t\t");
                 formatted = formatted.replaceAll("         ", "\n\t\t");
@@ -112,7 +115,7 @@ export default function SolutionDisplayCodeEditor(props : SolutionDisplayCodeEdi
                     language={language}
                 />
             : (
-                <div className='h-[585px] border-4 flex flex-col justify-center items-center'>
+                <div className='min-h-[585px] border-4 flex flex-col justify-center items-center'>
                     <button 
                         className='text-base lg:text-lg font-medium rounded-lg bg-muted hover:bg-white hover:text-black hover:border-[3px] hover:border-slate-600 p-4'
                         onClick={() => {setShowCode(true)}}

@@ -59,7 +59,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         <div className="flex flex-col lg:w-1/2">
                             <h1 className="text-lg lg:text-xl py-2 font-semibold">Expected Behaviour:</h1>
                             <iframe
-                                className='bg-white rounded-lg lg:h-[586px]'
+                                className='bg-white rounded-lg h-full'
                                 srcDoc={question.expectedOutput}
                                 title="output"
                                 sandbox="allow-scripts allow-forms"
