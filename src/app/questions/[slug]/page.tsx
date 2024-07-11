@@ -36,9 +36,9 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col lg:flex-row lg:gap-x-5">
-                                <div dangerouslySetInnerHTML={{__html: question.question}} className="w-1/2">
+                                <div dangerouslySetInnerHTML={{__html: question.question}} className="lg:w-1/2">
                                 </div>
-                                <div className="flex flex-col  w-1/2 px-5 border-l-2">
+                                <div className="flex flex-col lg:w-1/2 px-5 border-l-2">
                                     <div className="py-3 text-lg lg:text-xl font-semibold lg:font-bold">Expected Output:</div>
                                     <iframe
                                         className='w-full h-full bg-white rounded-lg overflow-y-auto'
