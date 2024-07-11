@@ -12,6 +12,7 @@ export async function POST(request: Request) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(response)
     })
-    console.info(validation_service_response)
+    console.log("See validation_service_response:")
+    console.log(validation_service_response)
     return Response.json(response)
 }

@@ -11,6 +11,7 @@ import { DiscussionForm } from "@/components/questions/DiscussionForm";
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "./submissionTable";
 import { columns } from "./submissionColumns";
+import { formatDateString } from "@/lib/utils"
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -34,18 +35,20 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                             <CardTitle>{question.title}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div dangerouslySetInnerHTML={{__html: question.question}}>
+                            <div className="flex flex-col lg:flex-row lg:gap-x-5">
+                                <div dangerouslySetInnerHTML={{__html: question.question}} className="w-1/2">
+                                </div>
+                                <div className="flex flex-col  w-1/2 px-5 border-l-2">
+                                    <div className="py-3 text-lg lg:text-xl font-semibold lg:font-bold">Expected Output:</div>
+                                    <iframe
+                                        className='w-full h-full bg-white rounded-lg overflow-y-auto'
+                                        srcDoc={question.expectedOutput}
+                                        title="output"
+                                        sandbox="allow-scripts allow-forms"
+                                    />
+                                </div>
                             </div>
                         </CardContent>
-                        <CardHeader>
-                            <CardTitle>Expected Output:</CardTitle>
-                            <iframe
-                                className='w-full bg-white rounded-lg overflow-y-auto'
-                                srcDoc={question.expectedOutput}
-                                title="output"
-                                sandbox="allow-scripts allow-forms"
-                            />
-                        </CardHeader>
                     </Card>
                     <Separator className="my-4" />
                     <CodeEditor questionId={question.id} userId={userId}/>
@@ -113,14 +116,16 @@ const DiscussionList = async ({ userId, questionId }: { userId: string | null, q
         <>
             <DiscussionForm userId={userId} questionId={questionId} />
             <Separator className="my-4" />
-            {questionPosts.map((post: any) => (
-                <Card key={post.id}>
-                    <CardHeader>
-                        <CardTitle>{post.title}</CardTitle>
-                        <CardDescription>{post.authorId} on {post.createdAt.toString()}</CardDescription>
-                    </CardHeader>
-                </Card>
-            ))}
+            <div className="flex flex-col gap-y-2">
+                {questionPosts.map((post: any) => (
+                    <Card key={post.id}>
+                        <CardHeader>
+                            <CardTitle>{post.title}</CardTitle>
+                            <CardDescription>{post.authorId} on {formatDateString(post.createdAt.toString())}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                ))}
+            </div>
         </>
     );
 }

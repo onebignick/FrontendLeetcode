@@ -51,7 +51,7 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-3">
                 <FormField
                     control={form.control}
                     name="title"
@@ -78,7 +78,7 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Create Post</Button>
+                <Button type="submit" className="w-1/4">Create Post</Button>
             </form>
         </Form>
     );

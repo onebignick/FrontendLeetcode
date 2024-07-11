@@ -1,7 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { result, status, submission } from "@/server/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 export interface Submission {
     userId: string,
@@ -24,7 +24,8 @@ export class SubmissionRepository implements IBaseRepository<any> {
                 eq(submission.questionId, questionId)
             ))
             .leftJoin(status, eq(submission.status, status.id))
-            .leftJoin(result, eq(submission.result, result.id));
+            .leftJoin(result, eq(submission.result, result.id))
+            .orderBy(desc(submission.createdAt));;
         return results;
     }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ErrorPopUp({error} : {error: {message: string}}) {
+export default function ErrorPopUp({error} : {error: string}) {
   return (
     <div className="flex items-center p-4 m-4 text-sm rounded-xl text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
         <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -8,7 +8,7 @@ export default function ErrorPopUp({error} : {error: {message: string}}) {
         </svg>
         <span className="sr-only">Info</span>
         <div>
-            <span className="font-medium">Error: </span>{error.message}
+            <span className="font-medium">Error: </span>{error}
         </div>
     </div>
   )
