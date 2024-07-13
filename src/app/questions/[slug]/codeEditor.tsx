@@ -8,6 +8,7 @@ import { submission } from "@/server/db/schema";
 import ValidationResultSkeletonCard from "@/components/questions/ValidationResultSkeletonCard";
 import ValidationResultCard from "@/components/questions/ValidationResultCard";
 import ErrorPopUp from "@/components/general/ErrorPopUp";
+import Split from 'react-split';
 
 interface codeEditorProps {
     questionId: string;
@@ -36,10 +37,12 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
     const [errorString, setErrorString] = useState<string>("");
 
     const scrollToBottom = () => {
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: "smooth"
-        });
+        setTimeout(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
+        }, 100);
     }
 
     useEffect(() => {
@@ -53,12 +56,13 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
                 setWindowWidth(window.innerWidth);
             }, 500);
         }
+        handleWindowResize();
         window.addEventListener("resize", handleWindowResize);
 
         return () => {
             window.removeEventListener("resize", handleWindowResize);
         }
-    });
+    }, []);
 
     const onMount = (editor: any) => {
         editorRef.current = editor;
@@ -66,6 +70,8 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
     };
 
     const handleSubmit = async () => {
+        setStatus('submissionRequested');
+        scrollToBottom();
         const response = await fetch("/api/createSubmission", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -90,14 +96,13 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
             setSubmissionId(data.id);
             setStatus('processing');
             toast({ description: "Submission Received! We are processing it." });
-            scrollToBottom();
             return;
         }
         else {
             setErrorString("Unable to submit code, please try again");
             setStatus("fail");
+            return;
         }
-        
     }
 
     useEffect(() => {
@@ -148,48 +153,84 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
 
     return (
         <>
-            <div className="flex flex-col lg:flex-row gap-5">
-                <div className="flex flex-col w-full lg:w-1/2 h-1/2 lg:h-fit">
-                    <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-xl">
-                        <div className="font-bold">{`</>`}</div>
-                        <div className="font-semibold text-xl">Code</div>
+            {isLargeViewport ? (
+                <Split className="split" gutterSize={7}>
+                    <div className="flex flex-col w-full lg:w-1/2 h-1/2 lg:h-fit">
+                        <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-r-0 border-gray-500 rounded-tl-lg">
+                            <div className="font-bold">{`</>`}</div>
+                            <div className="font-semibold text-xl">Code</div>
+                        </div>
+                        <Editor
+                            key = {windowWidth}
+                            options={{
+                                minimap: {
+                                    enabled: false,
+                                },
+                            }}
+                            height="65vh"
+                            theme="vs-dark"
+                            value={value}
+                            language={language}
+                            onMount={onMount}
+                            onChange={(value) => setValue(value)}
+                        />
                     </div>
-                    <Editor
-                        key = {windowWidth}
-                        options={{
-                            minimap: {
-                                enabled: false,
-                            },
-                        }}
-                        height="65vh"
-                        theme="vs-dark"
-                        value={value}
-                        language={language}
-                        onMount={onMount}
-                        onChange={(value) => setValue(value)}
-                    />
-                </div>
-                <div className="flex flex-col w-full lg:w-1/2">
-                    <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-xl">
-                        <div className="font-semibold text-xl">Output</div>
+                    <div className="flex flex-col w-full lg:w-1/2">
+                        <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-l-0 border-gray-500 rounded-tr-lg">
+                            <div className="font-semibold text-xl px-2">Output</div>
+                        </div>
+                        <iframe
+                            className={`bg-white w-full overflow-y-auto ${(isLargeViewport) ? 'h-full' : 'h-[500px]'}`}
+                            srcDoc={value}
+                            title="output"
+                            sandbox="allow-scripts allow-forms"
+                        />
                     </div>
-                    <iframe
-                        className={`bg-white w-full overflow-y-auto ${(isLargeViewport) ? 'h-full' : 'h-[500px]'}`}
-                        srcDoc={value}
-                        title="output"
-                        sandbox="allow-scripts allow-forms"
-                    />
+                </Split>) : (
+                <div className="flex flex-col gap-5">
+                    <div className="flex flex-col w-full lg:w-1/2 h-1/2 lg:h-fit">
+                        <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-lg">
+                            <div className="font-bold">{`</>`}</div>
+                            <div className="font-semibold text-xl">Code</div>
+                        </div>
+                        <Editor
+                            key = {windowWidth}
+                            options={{
+                                minimap: {
+                                    enabled: false,
+                                },
+                            }}
+                            height="65vh"
+                            theme="vs-dark"
+                            value={value}
+                            language={language}
+                            onMount={onMount}
+                            onChange={(value) => setValue(value)}
+                        />
+                    </div>
+                    <div className="flex flex-col w-full lg:w-1/2">
+                        <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-gray-500 rounded-t-lg">
+                            <div className="font-semibold text-xl">Output</div>
+                        </div>
+                        <iframe
+                            className={`bg-white w-full overflow-y-auto ${(isLargeViewport) ? 'h-full' : 'h-[500px]'}`}
+                            srcDoc={value}
+                            title="output"
+                            sandbox="allow-scripts allow-forms"
+                        />
+                    </div>
                 </div>
-            </div>
-            {(status !== "processing") && (
+            )}
+
+            {(status !== "submissionRequested" && status !== "processing") && (
                 <div className="flex justify-end py-2">
-                    <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please login before submitting" }) }}>
+                    <Button onClick={() => { userId ? handleSubmit() : toast({ description: "Please login before submitting" }) }} className="w-1/4">
                         Submit
                     </Button>
                 </div>
             )}
             
-            {(status === "processing") && (
+            {(status === "submissionRequested" || status === "processing") && (
                 <ValidationResultSkeletonCard/>
             )}
             {(status === "processed") && ( 

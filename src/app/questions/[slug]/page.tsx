@@ -29,14 +29,14 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                     <TabsTrigger value="discussion">Discussion</TabsTrigger>
                     <TabsTrigger value="submission">Submissions</TabsTrigger>
                 </TabsList>
-                <TabsContent value="question">
+                <TabsContent value="question" className="space-y-5">
                     <Card>
                         <CardHeader>
                             <CardTitle>{question.title}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex flex-col lg:flex-row lg:gap-x-5">
-                                <div dangerouslySetInnerHTML={{__html: question.question}} className="lg:w-1/2">
+                            <div className="flex flex-col lg:flex-row">
+                                <div dangerouslySetInnerHTML={{__html: question.question}} className="lg:w-1/2 lg:pr-5">
                                 </div>
                                 <div className="flex flex-col lg:w-1/2 px-5 lg:border-l-2">
                                     <div className="py-3 text-lg lg:text-xl font-semibold lg:font-bold">Expected Output:</div>
@@ -50,7 +50,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                             </div>
                         </CardContent>
                     </Card>
-                    <Separator className="my-4" />
+                    {/* <Separator className="my-4" /> */}
                     <CodeEditor questionId={question.id} userId={userId}/>
                 </TabsContent>
                 <TabsContent value="solution">

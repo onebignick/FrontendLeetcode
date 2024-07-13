@@ -25,7 +25,7 @@ export default function ValidationResultCard({ isCorrectAnswer, stackTrace, logs
     }, []);
     return (
         <>
-        <h1 className="text-lg lg:text-xl font-bold px-1 py-2">Validation result:</h1>
+        <h1 className="text-lg lg:text-xl xl:text-2xl font-bold px-1 py-2">Validation Result:</h1>
         <div className="flex flex-col gap-x-2 justify-start border-2 rounded-lg py-3 lg:py-5 px-5 lg:px-7 gap-y-3">
             <div className="flex text-lg lg:text-xl font-bold items-center">
                 {resultString}
