@@ -74,7 +74,7 @@ export default function SolutionDisplayCodeEditor(props : SolutionDisplayCodeEdi
                 </div>
                 
                 {isCopied ? (
-                    <div className='py-[5px] text-sm'>
+                    <div className='py-[5px] text-xs md:text-sm'>
                         Copied Successfully!
                     </div>
                 ) :  (showCode && (

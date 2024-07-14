@@ -14,7 +14,7 @@ export default function WelcomeCard() {
                         Trying to learn Web Development?
                     </div>
                     <div className="w-full flex justify-start text-[17px] lg:text-[21px] font-medium">
-                        You&#39;ve come to the right place. We will help you master basic HTML/CSS/JS with our suite of frontend leetcode-styled questions
+                        You&#39;ve come to the right place. We will help you master basic Frontend Development with our suite of frontend leetcode-styled questions
                     </div>
                 </div>
                 <div className='md:w-1/2 flex flex-col justify-center items-center gap-y-3'>
@@ -44,7 +44,6 @@ export default function WelcomeCard() {
                 </div>
                 <div className='w-full flex flex-col justify-center'>
                     <div className="flex font-extrabold text-5xl lg:text-6xl xl:text-7xl uppercase mb-8 text-center">Wire HTML/CSS/JS into your developer brain</div>
-                    <div className='text-center'>Get your basics down</div>
                 </div>
             </div>
             {/* <div>
