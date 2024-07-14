@@ -34,9 +34,8 @@ export default function Home() {
       <WelcomeCard />
       <div className='pt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:px-10 lg:px-20'>
         {categoriesToDisplay.map((category, index) => (
-          <div className='h-full'>
+          <div key={index} className='h-full'>
             <CategoryCard
-              key={index}
               category={category}
               description={categoryCardDetailsMap.get(category)?.get("description") || ""}
               callToAction={categoryCardDetailsMap.get(category)?.get("callToAction") || ""}
