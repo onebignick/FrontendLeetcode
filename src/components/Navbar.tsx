@@ -20,15 +20,15 @@ const DotIcon = () => {
 
 export default function Navbar() {
 	return (
-		<nav className="flex w-full items-center justify-between p-4 px-6 border-b-2">
+		<nav className="flex w-full items-center justify-between py-4 md:px-6 border-b-2">
 			<Link href="/">
 				<div className="flex flex-row items-center">
-					<Image src="/logo.png" width={45} height={45} alt="logo" className='mx-2' />
-					<h1 className="text-xl font-semibold">FRONTEND RACERS</h1>
+					<Image src="/logo.png" width={45} height={45} alt="logo" className='ml-1 md:mx-2' />
+					<h1 className="text-lg md:text-xl font-semibold">FRONTEND RACERS</h1>
 				</div>
 			</Link>
 
-			<div className="flex gap-x-4 text-lg font-medium">
+			<div className="flex gap-x-2 md:gap-x-4 text-base md:text-lg font-medium">
 				<Button asChild>
 					<Link href="/questions">Problems</Link>
 				</Button>
