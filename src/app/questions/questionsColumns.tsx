@@ -22,7 +22,7 @@ export const columns: ColumnDef<IQuestion>[] = [
         cell: ({ row }) => {
             return (
                 <Button variant="link" asChild>
-                    <Link href={`questions/${row.original.id}`}>{row.getValue("title")}</Link>
+                    <Link href={`/questions/${row.original.id}`}>{row.getValue("title")}</Link>
                 </Button>
             )
         }
