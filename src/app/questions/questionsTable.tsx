@@ -34,16 +34,19 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    hideFilterAndDropdown?: boolean
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    hideFilterAndDropdown = false
 }: DataTableProps<TData, TValue>) {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [filterValue, setFilterValue] = useState<string>("");
 
     const table = useReactTable({
         data,
@@ -63,13 +66,17 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="rounded-md border">
+            {(!hideFilterAndDropdown) && (
             <div className="flex items-center justify-between p-4 py-4">
                 <Input
                     placeholder="Filter questions..."
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("title")?.setFilterValue(event.target.value)
-                    }
+                    // value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                    value = {filterValue}
+                    onChange={(event) => {
+                        const filterByValue = event.target.value;
+                        setFilterValue(filterByValue);
+                        table.getColumn("title")?.setFilterValue(filterByValue);
+                    }}
                     className="max-w-sm"
                 />
                 <DropdownMenu>
@@ -101,6 +108,7 @@ export function DataTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
+            )}
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

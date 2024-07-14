@@ -1,16 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { passionOne } from '@/app/fonts';
 
 export default function WelcomeCard() {
     return (
         <div className='space-y-20 md:mt-5'>
             <div className='w-full flex flex-col md:flex-row px-2'>
                 <div className='md:w-1/2 flex flex-col gap-y-5 lg:gap-y-7 justify-center items-center py-4 lg:py-8 md:px-5'>
-                    <div className='w-full flex justify-start text-5xl lg:text-6xl xl:text-7xl uppercase lg:text-5xl font-bold italic'>
+                    <div className={`${passionOne.className} w-full flex justify-start text-5xl lg:text-6xl xl:text-7xl uppercase lg:text-5xl font-bold italic`}>
                         WELCOME, DEVELOPER
                     </div>
-                    <div className="w-full flex justify-start text-3xl lg:text-4xl font-semibold">
+                    <div className={`${passionOne.className} w-full flex justify-start text-3xl lg:text-4xl font-semibold`}>
                         Trying to learn Web Development?
                     </div>
                     <div className="w-full flex justify-start text-[17px] lg:text-[21px] font-medium">
@@ -27,7 +28,7 @@ export default function WelcomeCard() {
                             />
                         </div>
                             <button className="w-full md:w-2/3 bg-white px-8 py-2 rounded-xl text-lg md:text-xl font-extrabold text-black hover:bg-gray-300">
-                                <Link href="/questions">
+                                <Link href="/questions" className={passionOne.className}>
                                     START CODING!
                                 </Link>
                             </button>
@@ -43,7 +44,7 @@ export default function WelcomeCard() {
                     />
                 </div>
                 <div className='w-full flex flex-col justify-center'>
-                    <div className="flex font-extrabold text-5xl lg:text-6xl xl:text-7xl uppercase mb-8 text-center">Wire HTML/CSS/JS into your developer brain</div>
+                    <div className={`${passionOne.className}flex font-extrabold text-5xl lg:text-6xl xl:text-7xl uppercase mb-8 text-center`}>Wire HTML/CSS/JS into your developer brain</div>
                 </div>
             </div>
             {/* <div>

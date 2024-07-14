@@ -1,7 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { questions } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export interface IQuestion {
     id: string;
@@ -27,6 +27,11 @@ export class QuestionRepository implements IBaseRepository<any> {
         return result
     };
 
+    async getByDescriptionValue(descriptionValue: string): Promise<any> {
+        const lowerDescriptionValue = descriptionValue.toLowerCase();
+        const result = await db.select().from(questions).where(sql`LOWER(${questions.description}) LIKE ${`%${lowerDescriptionValue}%`}`);
+        return result
+    };
 
     create(): any { };
     update(): any { };

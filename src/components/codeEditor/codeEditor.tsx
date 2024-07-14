@@ -9,6 +9,7 @@ import ValidationResultSkeletonCard from "@/components/questions/ValidationResul
 import ValidationResultCard from "@/components/questions/ValidationResultCard";
 import ErrorPopUp from "@/components/general/ErrorPopUp";
 import Split from 'react-split';
+import { passionOne } from "@/app/fonts";
 
 interface codeEditorProps {
     questionId: string;
@@ -157,8 +158,8 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
                 <Split className="split" gutterSize={7}>
                     <div className="flex flex-col w-full lg:w-1/2 h-1/2 lg:h-fit">
                         <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-r-0 border-gray-500 rounded-tl-lg">
-                            <div className="font-bold">{`</>`}</div>
-                            <div className="font-semibold text-xl">Code</div>
+                            <div className={`${passionOne.className} font-bold text-xl`}>{`</>`}</div>
+                            <div className={`${passionOne.className} font-semibold text-xl md:text-2xl`}>Code</div>
                         </div>
                         <Editor
                             key = {windowWidth}
@@ -177,7 +178,7 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
                     </div>
                     <div className="flex flex-col w-full lg:w-1/2">
                         <div className="flex flex-row gap-x-3 items-center p-2 border-2 border-l-0 border-gray-500 rounded-tr-lg">
-                            <div className="font-semibold text-xl px-2">Output</div>
+                            <div className={`${passionOne.className} font-semibold text-xl md:text-2xl px-2`}>Output</div>
                         </div>
                         <iframe
                             className={`bg-white w-full overflow-y-auto ${(isLargeViewport) ? 'h-full' : 'h-[500px]'}`}

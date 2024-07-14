@@ -1,5 +1,5 @@
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
-import CodeEditor from "./codeEditor";
+import CodeEditor from "../../../components/codeEditor/codeEditor";
 import SolutionDisplayCodeEditor from "@/components/codeEditor/SolutionDisplayCodeEditor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
@@ -11,13 +11,34 @@ import { DiscussionForm } from "@/components/questions/DiscussionForm";
 import { Separator } from "@/components/ui/separator";
 import { DataTable } from "./submissionTable";
 import { columns } from "./submissionColumns";
-import { formatDateString } from "@/lib/utils"
+import { formatDateString } from "@/lib/utils";
+import { passionOne } from "@/app/fonts";
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
     const questions = await questionRepository.get(params.slug);
     const question = questions[0];
     const { userId } = auth();
+
+    const QuestionBreadcrumb = () => {
+        return (
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/questions">Problems</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href={`/questions/${params.slug}`}>{question.title}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+        );
+    }
 
     return (
         <>
@@ -32,14 +53,14 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                 <TabsContent value="question" className="space-y-5">
                     <Card>
                         <CardHeader>
-                            <CardTitle>{question.title}</CardTitle>
+                            <CardTitle className={`${passionOne.className} text-2xl md:text-3xl`}>{question.title}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col lg:flex-row">
                                 <div dangerouslySetInnerHTML={{__html: question.question}} className="lg:w-1/2 lg:pr-5">
                                 </div>
                                 <div className="flex flex-col lg:w-1/2 px-5 lg:border-l-2">
-                                    <div className="py-3 text-lg lg:text-xl font-semibold lg:font-bold">Expected Output:</div>
+                                    <div className={`${passionOne.className} py-3 text-xl lg:text-2xl font-semibold lg:font-bold`}>Expected Output:</div>
                                     <iframe
                                         className='w-full h-full bg-white rounded-lg overflow-y-auto'
                                         srcDoc={question.expectedOutput}
@@ -80,22 +101,6 @@ export default async function QuestionPage({ params }: { params: { slug: string 
             </Tabs>
         </>
     )
-}
-
-const QuestionBreadcrumb = () => {
-    return (
-        <Breadcrumb>
-            <BreadcrumbList>
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                    <BreadcrumbLink href="/questions">Problems</BreadcrumbLink>
-                </BreadcrumbItem>
-            </BreadcrumbList>
-        </Breadcrumb>
-    );
 }
 
 const SubmissionList = async ({ userId, questionId }: { userId: string | null, questionId: string }) => {

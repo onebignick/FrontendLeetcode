@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from './general/theme-toggle';
+import { passionOne } from '@/app/fonts';
 
 const DotIcon = () => {
 	return (
@@ -24,7 +25,7 @@ export default function Navbar() {
 			<Link href="/">
 				<div className="flex flex-row items-center">
 					<Image src="/logo.png" width={45} height={45} alt="logo" className='ml-1 md:mx-2' />
-					<h1 className="text-lg md:text-xl font-semibold">FRONTEND RACERS</h1>
+					<h1 className={`${passionOne.className} text-xl md:text-2xl font-semibold`}>FRONTEND RACERS</h1>
 				</div>
 			</Link>
 
