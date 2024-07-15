@@ -27,9 +27,11 @@ export default function WelcomeCard() {
                                 alt="htmlcssjsImage"
                             />
                         </div>
-                            <button className="w-full md:w-2/3 bg-white px-8 py-2 rounded-xl text-lg md:text-xl font-extrabold text-black hover:bg-gray-300">
-                                <Link href="/questions" className={passionOne.className}>
-                                    START CODING!
+                            <button className="w-full md:w-2/3 bg-white rounded-xl text-lg md:text-xl font-extrabold text-black hover:bg-gray-300">
+                                <Link href="/questions" className={`${passionOne.className} rounded-xl`}>
+                                    <div className='w-full h-full px-8 py-2 '>
+                                        START CODING!
+                                    </div>
                                 </Link>
                             </button>
                     </div>

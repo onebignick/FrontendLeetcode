@@ -62,7 +62,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                                 <div className="flex flex-col lg:w-1/2 px-5 lg:border-l-2">
                                     <div className={`${passionOne.className} py-3 text-xl lg:text-2xl font-semibold lg:font-bold`}>Expected Output:</div>
                                     <iframe
-                                        className='w-full h-full bg-white rounded-lg overflow-y-auto'
+                                        className='w-full h-full bg-white rounded-lg overflow-y-auto min-h-[300px] md:min-h-[350px]'
                                         srcDoc={question.expectedOutput}
                                         title="output"
                                         sandbox="allow-scripts allow-forms"

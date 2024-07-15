@@ -29,11 +29,7 @@ export default function SolutionDisplayCodeEditor(props : SolutionDisplayCodeEdi
                     parser: 'html',
                     plugins: [parserHtml],
                 });
-                // formatted = formatted.replaceAll("                 ", "\n\t\t\t\t");
-                // formatted = formatted.replaceAll("             ", "\n\t\t\t");
-                // formatted = formatted.replaceAll("        ", "\n\t\t");
-                // formatted = formatted.replaceAll("     ", "\n\t");
-                // formatted = formatted.replaceAll("> ", ">\n");
+                
                 formatted = formatted.replaceAll("                      ", "\n\t\t\t\t\t\t");
                 formatted = formatted.replaceAll("                  ", "\n\t\t\t\t\t");
                 formatted = formatted.replaceAll("              ", "\n\t\t\t\t");
