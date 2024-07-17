@@ -39,7 +39,7 @@ export const questionPost = createTable("questionPost", {
 
 export const questionType = createTable("questionType", {
 	id: uuid("id").defaultRandom().primaryKey(),
-	name: varchar("name", { length: 32 }),
+	name: varchar("name", { length: 32 }).notNull(),
 });
 
 export const question_questionType = createTable("question_questionType", {

@@ -2,6 +2,7 @@ import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { questionType, question_questionType, questions } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
+import { IQuestionType } from "../questionType/QuestionTypeRepository";
 
 export interface IQuestion {
     id: string;
@@ -9,8 +10,13 @@ export interface IQuestion {
     description: string;
     question: string;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt: Date | null;
     expectedOutput: string;
+}
+
+export interface QuestionWithTypes {
+    question: IQuestion;
+    questionTypes: (IQuestionType | null)[];
 }
 
 export class QuestionRepository implements IBaseRepository<any> {
@@ -27,16 +33,16 @@ export class QuestionRepository implements IBaseRepository<any> {
         return result
     };
 
-    async getAllWithQuestionType(): Promise<any> {
+    async getAllWithQuestionType(): Promise<QuestionWithTypes[]> {
         const temp = await db.select().from(questions)
             .leftJoin(question_questionType, eq(questions.id, question_questionType.questionId))
             .leftJoin(questionType, eq(question_questionType.questionTypeId, questionType.id))
             .orderBy(questions.id);
 
-        const result: any = [];
+        const result: QuestionWithTypes[] = [];
         for (let i = 0; i < temp.length; i++) {
-            let question = temp[i].question;
-            let questionType = temp[i].questionType;
+            let question: IQuestion = temp[i].question;
+            let questionType: IQuestionType | null = temp[i].questionType;
             if (i === 0 || result[result.length - 1].question.id != question.id) {
                 result.push({ question: question, questionTypes: questionType ? [questionType] : [] })
             } else {
