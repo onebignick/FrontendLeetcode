@@ -37,6 +37,16 @@ export const questionPost = createTable("questionPost", {
 	updatedAt: timestamp("updatedAt"),
 });
 
+export const questionType = createTable("questionType", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	name: varchar("name", { length: 32 }),
+});
+
+export const question_questionType = createTable("question_questionType", {
+	questionId: uuid("questionId").references(() => questions.id).primaryKey(),
+	questionTypeId: uuid("questionTypeId").references(() => questionType.id).primaryKey(),
+});
+
 export const status = createTable("status", {
 	id: uuid("id").defaultRandom().primaryKey(),
 	name: varchar("name", { length: 256 }).notNull(),
