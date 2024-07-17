@@ -15,8 +15,14 @@ export interface IQuestion {
 }
 
 export interface QuestionWithTypes {
-    question: IQuestion;
-    questionTypes: (IQuestionType | null)[];
+    id: string;
+    title: string;
+    description: string;
+    question: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+    expectedOutput: string;
+    questionTypes: string[];
 }
 
 export class QuestionRepository implements IBaseRepository<any> {
@@ -43,10 +49,10 @@ export class QuestionRepository implements IBaseRepository<any> {
         for (let i = 0; i < temp.length; i++) {
             let question: IQuestion = temp[i].question;
             let questionType: IQuestionType | null = temp[i].questionType;
-            if (i === 0 || result[result.length - 1].question.id != question.id) {
-                result.push({ question: question, questionTypes: questionType ? [questionType] : [] })
-            } else {
-                result[result.length - 1].questionTypes.push(questionType);
+            if (i === 0 || result[result.length - 1].id != question.id) {
+                result.push({ ...question, questionTypes: questionType ? [questionType.name] : [] })
+            } else if (questionType?.name) {
+                result[result.length - 1].questionTypes.push(questionType.name);
             }
         }
         return result;

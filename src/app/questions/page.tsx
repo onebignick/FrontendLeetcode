@@ -2,14 +2,14 @@ import { QuestionRepository } from "@/lib/repository/question/QuestionRepository
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { DataTable } from "./questionsTable";
-import { columns } from "./questionsColumns";
+import { DataTable } from "./_components/DataTable";
+import { columns } from "./_components/DataTableColumns";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 
 
 export default async function QuestionPage() {
     const questionRepository: QuestionRepository = new QuestionRepository();
-    const questions = await questionRepository.getAll();
+    const questions = await questionRepository.getAllWithQuestionType();
 
     const QuestionBreadcrumb = () => {
         return (
