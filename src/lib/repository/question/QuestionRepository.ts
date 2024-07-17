@@ -1,6 +1,6 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
-import { questions } from "@/server/db/schema";
+import { questionType, question_questionType, questions } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 
 export interface IQuestion {
@@ -26,6 +26,25 @@ export class QuestionRepository implements IBaseRepository<any> {
         const result = await db.select().from(questions);
         return result
     };
+
+    async getAllWithQuestionType(): Promise<any> {
+        const temp = await db.select().from(questions)
+            .leftJoin(question_questionType, eq(questions.id, question_questionType.questionId))
+            .leftJoin(questionType, eq(question_questionType.questionTypeId, questionType.id))
+            .orderBy(questions.id);
+
+        const result: any = [];
+        for (let i = 0; i < temp.length; i++) {
+            let question = temp[i].question;
+            let questionType = temp[i].questionType;
+            if (i === 0 || result[result.length - 1].question.id != question.id) {
+                result.push({ question: question, questionTypes: questionType ? [questionType] : [] })
+            } else {
+                result[result.length - 1].questionTypes.push(questionType);
+            }
+        }
+        return result;
+    }
 
     async getByDescriptionValue(descriptionValue: string): Promise<any> {
         const lowerDescriptionValue = descriptionValue.toLowerCase();
