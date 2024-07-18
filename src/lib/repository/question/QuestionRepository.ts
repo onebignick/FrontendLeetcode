@@ -1,13 +1,15 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
-import { questionType, question_questionType, questions } from "@/server/db/schema";
+import { questionDifficulty, questionType, question_questionType, questions } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { IQuestionType } from "../questionType/QuestionTypeRepository";
+import { IQuestionDifficulty } from "../questionDifficulty/QuestionDifficultyRepository";
 
 export interface IQuestion {
     id: string;
     title: string;
     description: string;
+    difficultyId: string | null;
     question: string;
     createdAt: Date;
     updatedAt: Date | null;
@@ -18,10 +20,12 @@ export interface QuestionWithTypes {
     id: string;
     title: string;
     description: string;
+    difficultyId: string | null;
     question: string;
     createdAt: Date;
     updatedAt: Date | null;
     expectedOutput: string;
+    difficulty: string | null;
     questionTypes: string[];
 }
 
@@ -43,14 +47,16 @@ export class QuestionRepository implements IBaseRepository<any> {
         const temp = await db.select().from(questions)
             .leftJoin(question_questionType, eq(questions.id, question_questionType.questionId))
             .leftJoin(questionType, eq(question_questionType.questionTypeId, questionType.id))
+            .leftJoin(questionDifficulty, eq(questions.difficultyId, questionDifficulty.id))
             .orderBy(questions.id);
 
         const result: QuestionWithTypes[] = [];
         for (let i = 0; i < temp.length; i++) {
             let question: IQuestion = temp[i].question;
             let questionType: IQuestionType | null = temp[i].questionType;
+            let questionDifficulty: IQuestionDifficulty | null = temp[i].questionDifficulty;
             if (i === 0 || result[result.length - 1].id != question.id) {
-                result.push({ ...question, questionTypes: questionType ? [questionType.name] : [] })
+                result.push({ ...question, difficulty: questionDifficulty ? questionDifficulty.name : null, questionTypes: questionType ? [questionType.name] : [] })
             } else if (questionType?.name) {
                 result[result.length - 1].questionTypes.push(questionType.name);
             }

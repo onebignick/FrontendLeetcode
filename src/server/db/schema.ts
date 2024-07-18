@@ -3,8 +3,14 @@ import { integer, pgTableCreator, timestamp, varchar, uuid } from "drizzle-orm/p
 
 export const createTable = pgTableCreator((name) => `frontendLeetcode_${name}`)
 
+export const questionDifficulty = createTable("questionDifficulty", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	name: varchar("name", { length: 32 }).notNull(),
+});
+
 export const questions = createTable("question", {
 	id: uuid("id").defaultRandom().primaryKey(),
+	difficultyId: uuid("difficultyId").references(() => questionDifficulty.id),
 	title: varchar("title", { length: 1024 }).notNull(),
 	description: varchar("description", { length: 10000 }).notNull(),
 	question: varchar("question", { length: 10000 }).notNull(),
