@@ -24,6 +24,9 @@ export const questions = createTable("question", {
 
 export const user = createTable("user", {
 	id: varchar("id", { length: 32 }).primaryKey().unique(),
+	username: varchar("username", { length: 100 }),
+	firstName: varchar("firstname", { length: 100 }),
+	lastName: varchar("lastname", { length: 100 }),
 	createdAt: timestamp("created_at")
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),

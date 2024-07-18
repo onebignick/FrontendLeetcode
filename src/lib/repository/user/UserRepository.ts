@@ -1,6 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { user } from "@/server/db/schema";
+import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
 export class UserRepository implements IBaseRepository<any> {
@@ -18,8 +19,15 @@ export class UserRepository implements IBaseRepository<any> {
 
 
     async create(clerkUserId: string): Promise<any> {
+        const newUser = await clerkClient.users.getUser(clerkUserId);
+
         const result = await db.insert(user)
-            .values({ id: clerkUserId })
+            .values({
+                id: clerkUserId,
+                username: newUser.id,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+            })
             .onConflictDoNothing();
         return result;
     };
