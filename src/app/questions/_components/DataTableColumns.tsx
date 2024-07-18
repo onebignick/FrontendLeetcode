@@ -39,7 +39,12 @@ export const columns: ColumnDef<QuestionWithTypes>[] = [
         },
     },
     {
+        accessorKey: "difficulty",
+        header: ({ column }) => (<DataTableColumnHeader column={column} title="Difficulty" />),
+        cell: ({ row }) => <Badge>{row.getValue("difficulty")}</Badge>,
+    },
+    {
         id: "actions",
-        cell: () => <DataTableRowActions />,
+        cell: () => <div className="w-full flex justify-end"><DataTableRowActions /></div>,
     }
 ];
