@@ -3,7 +3,7 @@
 Visit the production site here: [Frontend Racers](https://frontend-leetcode.vercel.app/)
 
 ### About Frontend Racers: 
-Users can attempt a suite of frontend leetcode-styled questions where they are given an expected output. Our <a href="https://github.com/Qingyu255/frontendCodeValidationService">frontend-code-validation-service</a> will then process user submitted code and return the validation outcome. Users can track their progress under _Submissions_
+Users can attempt a suite of frontend leetcode-styled questions where they are given an expected output. Our <a href="https://github.com/Qingyu255/frontendCodeValidationService" target="_blank">frontend-code-validation-service (click to view Repo!)</a> built on FastAPI will then process user submitted code and return the validation outcome. Users can track their progress under _Submissions_.
 
 ### To Clone Repo: 
 ```
