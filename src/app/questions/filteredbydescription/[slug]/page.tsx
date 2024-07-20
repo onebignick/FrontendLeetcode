@@ -9,7 +9,6 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, Breadc
 export default async function page({ params }: { params: { slug: string } }) {
 
     // this route filters by description
-    
     const descriptionFilterValue = decodeURIComponent(params.slug);
 
     const questionRepository: QuestionRepository = new QuestionRepository();
