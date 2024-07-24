@@ -42,6 +42,9 @@ export const columns: ColumnDef<QuestionWithTypes>[] = [
         accessorKey: "difficulty",
         header: ({ column }) => (<DataTableColumnHeader column={column} title="Difficulty" />),
         cell: ({ row }) => <Badge>{row.getValue("difficulty")}</Badge>,
+        filterFn: (row, id, values) => {
+            return values.includes(row.getValue("difficulty"))
+        }
     },
     {
         id: "actions",

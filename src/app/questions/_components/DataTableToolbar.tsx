@@ -23,6 +23,21 @@ const labels = [
         label: "Javascript",
     },
 ]
+
+const difficulties = [
+    {
+        value: "Easy",
+        label: "Easy",
+    },
+    {
+        value: "Medium",
+        label: "Medium",
+    },
+    {
+        value: "Hard",
+        label: "Hard",
+    }
+]
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
@@ -48,6 +63,13 @@ export function DataTableToolbar<TData>({
                         column={table.getColumn("labels")}
                         title="Labels"
                         options={labels}
+                    />
+                )}
+                {table.getColumn("difficulty") && (
+                    <DataTableFacetedFilter
+                        column={table.getColumn("difficulty")}
+                        title="Difficulty"
+                        options={difficulties}
                     />
                 )}
                 {isFiltered && (
