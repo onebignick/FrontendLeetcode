@@ -32,7 +32,7 @@ export default async function QuestionPage() {
             <QuestionBreadcrumb />
             <Alert>
                 <AlertTitle className="flex justify-between items-center">
-                    Want to contribute a question?
+                    Want to contribute your own question?
                     <Button>
                         <Link href="/contribute">Contribute Question</Link>
                     </Button>

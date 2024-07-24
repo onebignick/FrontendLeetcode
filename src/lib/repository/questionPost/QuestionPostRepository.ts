@@ -1,6 +1,6 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
-import { questionPost } from "@/server/db/schema";
+import { questionPost, user } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 
 export class QuestionPostRepository implements IBaseRepository<any> {
@@ -15,6 +15,7 @@ export class QuestionPostRepository implements IBaseRepository<any> {
             .where(
                 eq(questionPost.questionId, questionId)
             )
+            .leftJoin(user, eq(questionPost.authorId, user.id))
         return results;
     }
 

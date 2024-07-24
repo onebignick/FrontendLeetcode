@@ -14,6 +14,13 @@ import {
 	FormLabel,
 	FormMessage
 } from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
@@ -21,7 +28,8 @@ const formSchema = z.object({
 		.min(5, {
 			message: "Title must be at least 5 characters"
 		})
-		.max(1000)
+		.max(1000),
+	difficulty: z.string(),
 })
 
 export default function Contribute() {
@@ -47,12 +55,30 @@ export default function Contribute() {
 							<FormItem>
 								<FormLabel>Question Title</FormLabel>
 								<FormControl>
-									<Input placeholder="shadcn" {...field} />
+									<Input placeholder="Title of your question" {...field} />
 								</FormControl>
-								<FormDescription>
-									This is the title of your question.
-								</FormDescription>
 								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="difficulty"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Question Difficulty</FormLabel>
+								<Select onValueChange={field.onChange} defaultValue={field.value}>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Select a difficulty" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										<SelectItem value="cea62e47-0250-428d-b8c3-ff9a90f0b32a">Easy</SelectItem>
+										<SelectItem value="389e9322-6cd9-42e3-a2cf-ab483fa773b5">Medium</SelectItem>
+										<SelectItem value="5b842ade-c0aa-4a5f-97f1-b86f92e0d273">Hard</SelectItem>
+									</SelectContent>
+								</Select>
 							</FormItem>
 						)}
 					/>

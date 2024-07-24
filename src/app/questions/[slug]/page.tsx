@@ -1,7 +1,7 @@
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
 import CodeEditor from "../../../components/codeEditor/codeEditor";
 import SolutionDisplayCodeEditor from "@/components/codeEditor/SolutionDisplayCodeEditor";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbLink } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { auth } from "@clerk/nextjs/server";
@@ -13,6 +13,8 @@ import { DataTable } from "./submissionTable";
 import { columns } from "./submissionColumns";
 import { formatDateString } from "@/lib/utils";
 import { passionOne } from "@/app/fonts";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
 export default async function QuestionPage({ params }: { params: { slug: string } }) {
     const questionRepository: QuestionRepository = new QuestionRepository();
@@ -57,7 +59,7 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col lg:flex-row">
-                                <div dangerouslySetInnerHTML={{__html: question.question}} className="lg:w-1/2 lg:pr-5">
+                                <div dangerouslySetInnerHTML={{ __html: question.question }} className="lg:w-1/2 lg:pr-5">
                                 </div>
                                 <div className="flex flex-col lg:w-1/2 px-5 lg:border-l-2">
                                     <div className={`${passionOne.className} py-3 text-xl lg:text-2xl font-semibold lg:font-bold`}>Expected Output:</div>
@@ -72,13 +74,13 @@ export default async function QuestionPage({ params }: { params: { slug: string 
                         </CardContent>
                     </Card>
                     {/* <Separator className="my-4" /> */}
-                    <CodeEditor questionId={question.id} userId={userId}/>
+                    <CodeEditor questionId={question.id} userId={userId} />
                 </TabsContent>
                 <TabsContent value="solution">
                     {/* {question.expectedOutput} */}
                     <div className="flex flex-col lg:flex-row gap-x-5 gap-y-5 ">
                         <div className="lg:w-1/2">
-                            <SolutionDisplayCodeEditor language="html" displayName="Solution Code" value={question.expectedOutput}/>
+                            <SolutionDisplayCodeEditor language="html" displayName="Solution Code" value={question.expectedOutput} />
                         </div>
                         <div className="flex flex-col lg:w-1/2">
                             <h1 className="text-lg lg:text-xl py-2 font-semibold">Expected Behaviour:</h1>
@@ -116,6 +118,7 @@ const SubmissionList = async ({ userId, questionId }: { userId: string | null, q
 const DiscussionList = async ({ userId, questionId }: { userId: string | null, questionId: string }) => {
     const questionPostRepository: QuestionPostRepository = new QuestionPostRepository();
     const questionPosts = await questionPostRepository.getByQuestion(questionId);
+    console.log(questionPosts);
 
     return (
         <>
@@ -123,11 +126,20 @@ const DiscussionList = async ({ userId, questionId }: { userId: string | null, q
             <Separator className="my-4" />
             <div className="flex flex-col gap-y-2">
                 {questionPosts.map((post: any) => (
-                    <Card key={post.id}>
+                    <Card key={post.questionPost.id}>
                         <CardHeader>
-                            <CardTitle>{post.title}</CardTitle>
-                            <CardDescription>{post.authorId} on {formatDateString(post.createdAt.toString())}</CardDescription>
+                            <CardTitle>{post.questionPost.title}</CardTitle>
+                            <CardDescription>{post.user.firstName} {post.user.lastName} on {formatDateString(post.questionPost.createdAt.toString())}</CardDescription>
                         </CardHeader>
+                        <CardContent>{post.questionPost.description}</CardContent>
+                        <CardFooter>
+                            <ToggleGroup type="multiple" size="sm">
+                                <ToggleGroupItem value="upvote"><ArrowUpIcon /></ToggleGroupItem>
+                                <ToggleGroupItem value="downvote">
+                                    <ArrowDownIcon />
+                                </ToggleGroupItem>
+                            </ToggleGroup>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>
