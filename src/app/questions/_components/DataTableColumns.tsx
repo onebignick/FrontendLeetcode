@@ -34,8 +34,8 @@ export const columns: ColumnDef<QuestionWithTypes>[] = [
             );
         },
         filterFn: (row, id, value) => {
-            const targetArray: string[] = row.original.questionTypes;
-            return targetArray.includes(value);
+            const target = row.original.questionTypes.filter(cmp => value.includes(cmp))
+            return target.length>=value.length;
         },
     },
     {
