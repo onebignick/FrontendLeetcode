@@ -52,6 +52,7 @@
     "react-hook-form": "^7.51.5",
     "react-monaco-editor": "^0.55.0",
     "react-split": "^2.0.14",
+    "recharts": "^2.12.7",
     "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",

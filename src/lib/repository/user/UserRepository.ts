@@ -2,7 +2,7 @@ import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { user } from "@/server/db/schema";
 import { clerkClient } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export class UserRepository implements IBaseRepository<any> {
 
@@ -10,6 +10,13 @@ export class UserRepository implements IBaseRepository<any> {
         const result = await db.select().from(user).where(eq(user.id, clerkUserId));
         return result
     };
+
+    async getRecentByCreatedDate(n: number): Promise<any> {
+        const result = await db.select().from(user)
+        .limit(n)
+        .orderBy(desc(user.createdAt))
+        return result;
+    }
 
 
     async getAll(): Promise<any> {
