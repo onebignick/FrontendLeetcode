@@ -32,6 +32,7 @@ export default function UserPage() {
       <div className='pt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:px-10 lg:px-20'>
         {categoriesToDisplay.map((category, index) => (
           <div key={index} className='h-full'>
+            <WelcomeCard/>
             <CategoryCard
               category={category}
               description={categoryCardDetailsMap.get(category)?.get("description") || ""}
