@@ -10,6 +10,7 @@ import ValidationResultCard from "@/components/questions/ValidationResultCard";
 import ErrorPopUp from "@/components/general/ErrorPopUp";
 import Split from 'react-split';
 import { passionOne } from "@/app/fonts";
+import { useRouter } from "next/navigation";
 
 interface codeEditorProps {
     questionId: string;
@@ -27,6 +28,7 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
     const { toast } = useToast();
     const [windowWidth, setWindowWidth] = useState<number>();
     const [isLargeViewport, setIsLargeViewport] = useState<boolean>(true);
+    const router = useRouter();
 
     // for code validation
     const apiUrl = process.env.NEXT_PUBLIC_FRONTEND_CODE_VALIDATION_SERVICE_API_ENDPOINT;
@@ -71,39 +73,46 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
     };
 
     const handleSubmit = async () => {
-        setStatus('submissionRequested');
-        scrollToBottom();
-        const response = await fetch("/api/createSubmission", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userId: userId,
-                questionId: questionId,
-                language: "html",
-                code: value
+        try {
+            setStatus('submissionRequested');
+            scrollToBottom();
+            const response = await fetch("/api/createSubmission", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: userId,
+                    questionId: questionId,
+                    language: "html",
+                    code: value
+                })
             })
-        })
-        if (!response.ok) {
-            setErrorString("Unable to submit code, please try again");
-            setStatus("fail");
-            const errorResponse = await response.json();
-            console.error("Failed to submit code for validation to backend service");
-            console.error(errorResponse);
-            return;
+            if (!response.ok) {
+                setErrorString("Unable to submit code, please try again");
+                setStatus("fail");
+                const errorResponse = await response.json();
+                console.error("Failed to submit code for validation to backend service");
+                console.error(errorResponse);
+                return;
+            }
+            else if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setSubmissionId(data.id);
+                setStatus('processing');
+                toast({ description: "Submission Received! We are processing it." });
+                return;
+            }
+            else {
+                setErrorString("Unable to submit code, please try again");
+                setStatus("fail");
+                return;
+            }
+        } catch(error) {
+            console.error("Error in code submission", error)
+        } finally {
+            router.refresh();
         }
-        else if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            setSubmissionId(data.id);
-            setStatus('processing');
-            toast({ description: "Submission Received! We are processing it." });
-            return;
-        }
-        else {
-            setErrorString("Unable to submit code, please try again");
-            setStatus("fail");
-            return;
-        }
+        
     }
 
     useEffect(() => {
