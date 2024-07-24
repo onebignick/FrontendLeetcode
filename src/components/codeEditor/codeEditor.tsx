@@ -112,7 +112,6 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
         } finally {
             router.refresh();
         }
-        
     }
 
     useEffect(() => {
@@ -146,6 +145,8 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
                     setStatus("idle");
                     console.error('Failed to get submission status:', error);
                     return;
+                } finally {
+                    router.refresh();
                 }
                 // Wait for the next polling interval
                 await new Promise(resolve => setTimeout(resolve, pollingInterval));
