@@ -1,4 +1,5 @@
 import CategoryCard from '@/components/homePage/CategoryCard';
+import WelcomeCard from '@/components/homePage/WelcomeCard';
 
 export default function UserPage() {
 
@@ -27,6 +28,7 @@ export default function UserPage() {
 
   return (
     <main className="px-5 lg:px-10 xl:px-15 py-5">
+      <WelcomeCard/>
       <div className='pt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:px-10 lg:px-20'>
         {categoriesToDisplay.map((category, index) => (
           <div key={index} className='h-full'>
