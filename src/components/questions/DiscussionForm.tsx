@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "../ui/Spinner";
+import ErrorPopUp from "../general/ErrorPopUp";
 
 interface Props {
     userId: string | null,
@@ -26,7 +27,8 @@ const formSchema = z.object({
 export const DiscussionForm = ({ userId, questionId }: Props) => {
 
     const router = useRouter();
-    const [loading, setLoading] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [postSubmissionError, setPostSubmissionError] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -49,14 +51,20 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
                     description: values.description
                 })
             })
-            console.log(response.json());
+            if (!response.ok) {
+                setPostSubmissionError(true);
+                console.error("Failed to create post");
+                setTimeout(() => {
+                    setPostSubmissionError(false);
+                }, 3000); // display error pop up for 3 seconds
+            }
+            form.reset();
+            // console.log(response.json());
         } catch (error: any) {
             console.error(error)
         } finally {
             router.refresh();
-            setTimeout(() => {
-                setLoading(false);
-            }, 1500)
+            setLoading(false);
         }
     }
 
@@ -96,6 +104,9 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
                         "Create Post"
                     )}
                 </Button>
+                {postSubmissionError && (
+                    <ErrorPopUp error={`Error in creating discussion post. Please Try again`}/>
+                )}
             </form>
         </Form>
     );
