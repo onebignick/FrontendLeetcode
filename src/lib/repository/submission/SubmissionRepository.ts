@@ -22,6 +22,10 @@ export class SubmissionRepository implements IBaseRepository<any> {
     };
 
     async getByUserId(userId: string | null, questionId: string): Promise<any> {
+        if (userId === null) {
+            console.error("Error in querying submissions from db: User ID cannot be null");
+            return;
+        }
         const results = await db.select()
             .from(submission)
             .where(and(
@@ -45,8 +49,8 @@ export class SubmissionRepository implements IBaseRepository<any> {
             .groupBy(sql`DATE_TRUNC('day', ${submission.createdAt})`)
             .orderBy(sql`DATE_TRUNC('day', ${submission.createdAt})`);
         return records.map(record => ({
-            date: new Date(record.date),
-            count: parseInt(record.count)
+            date: new Date(record.date as string),
+            count: parseInt(record.count as string)
         })) ;
     }
 
@@ -62,7 +66,7 @@ export class SubmissionRepository implements IBaseRepository<any> {
             .insert(submission)
             .values({
                 userId: newSubmission.userId,
-                questionId: newSubmission.questionId,
+                questionId: newSubmission.questionId.toString(),
                 language: newSubmission.language,
                 code: newSubmission.code,
             })

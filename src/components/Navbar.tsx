@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
@@ -21,20 +21,6 @@ const DotIcon = () => {
 }
 
 export default function Navbar({ submissionRecords } : UserSubmissionHeatMapProps) {
-	// const fetchSubmissionRecords = async () => {
-	// 	const response = await fetch("/api/getSubmissionRecords", {
-	// 		method: "GET"
-	// 	})
-	// 	if (!response.ok) {
-	// 		console.error("unable to fetchSubmissionRecords");
-	// 		return
-	// 	}
-
-	// 	const submissionRecords = await response.json();
-	// 	console.log(submissionRecords);
-	// 	console.log("yay")
-
-	// }
 	
 	return (
 		<nav className="flex w-full items-center justify-between py-4 md:px-6 border-b-2">
