@@ -1,12 +1,13 @@
 "use client"
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "../ui/Spinner";
 
 interface Props {
     userId: string | null,
@@ -25,6 +26,7 @@ const formSchema = z.object({
 export const DiscussionForm = ({ userId, questionId }: Props) => {
 
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -36,6 +38,7 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
+            setLoading(true);
             const response = await fetch("/api/createPost", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -51,6 +54,9 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
             console.error(error)
         } finally {
             router.refresh();
+            setTimeout(() => {
+                setLoading(false);
+            }, 1500)
         }
     }
 
@@ -83,7 +89,13 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-1/4">Create Post</Button>
+                <Button type="submit" className={`${loading ? "disabled" : ""} w-1/4`} disabled={loading}>
+                    {loading ? (
+                        <Spinner />
+                    ) : (
+                        "Create Post"
+                    )}
+                </Button>
             </form>
         </Form>
     );
