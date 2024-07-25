@@ -1,11 +1,12 @@
 "use client"
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from './general/theme-toggle';
 import { passionOne } from '@/app/fonts';
+import UserSubmissionHeatMap, { SubmissionRecord, UserSubmissionHeatMapProps } from './userSubmissionHeatmap/UserSubmissionHeatMap';
 
 const DotIcon = () => {
 	return (
@@ -19,7 +20,22 @@ const DotIcon = () => {
 	)
 }
 
-export default function Navbar() {
+export default function Navbar({ submissionRecords } : UserSubmissionHeatMapProps) {
+	// const fetchSubmissionRecords = async () => {
+	// 	const response = await fetch("/api/getSubmissionRecords", {
+	// 		method: "GET"
+	// 	})
+	// 	if (!response.ok) {
+	// 		console.error("unable to fetchSubmissionRecords");
+	// 		return
+	// 	}
+
+	// 	const submissionRecords = await response.json();
+	// 	console.log(submissionRecords);
+	// 	console.log("yay")
+
+	// }
+	
 	return (
 		<nav className="flex w-full items-center justify-between py-4 md:px-6 border-b-2">
 			<Link href="/">
@@ -44,7 +60,9 @@ export default function Navbar() {
 							labelIcon={<DotIcon />}
 							url="stats"
 						>
-							<div>Hello world!</div>
+							<div className='px-3'>
+								<UserSubmissionHeatMap submissionRecords={submissionRecords}/>
+							</div>
 						</UserButton.UserProfilePage>
 						<UserButton.UserProfilePage label="account" />
 						<UserButton.UserProfilePage label="security" />

@@ -1,7 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { questionPost, user } from "@/server/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, desc } from "drizzle-orm";
 
 export class QuestionPostRepository implements IBaseRepository<any> {
     async get(id: string): Promise<any> {
@@ -16,6 +16,7 @@ export class QuestionPostRepository implements IBaseRepository<any> {
                 eq(questionPost.questionId, questionId)
             )
             .leftJoin(user, eq(questionPost.authorId, user.id))
+            .orderBy(desc(questionPost.createdAt));;
         return results;
     }
 

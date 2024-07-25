@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { inter } from "./fonts";
+import { auth } from "@clerk/nextjs/server";
+import { SubmissionRepository } from '@/lib/repository/submission/SubmissionRepository';
 
 export const metadata: Metadata = {
 	title: 'Frontend Racers',
@@ -16,11 +18,18 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const { userId } = auth();
+	let userSubmissionRecords = [];
+    if (userId) {
+        const submissionRepository = new SubmissionRepository();
+        userSubmissionRecords = await submissionRepository.getSubmissionRecords(userId);
+    }
+
 	return (
 		<ClerkProvider>
 			<html lang="en">
@@ -31,7 +40,7 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<Navbar />
+						<Navbar submissionRecords={userSubmissionRecords}/>
 						<div className="min-h-screen">{children}</div>
 						<Toaster />
 						<Footer />

@@ -1,13 +1,18 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { result, status, submission } from "@/server/db/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, sql, desc } from "drizzle-orm";
 
 export interface Submission {
     userId: string,
     questionId: number,
     language: string,
     code: string,
+}
+
+export interface SubmissionRecord {
+    date: Date;
+    count: number;
 }
 
 export class SubmissionRepository implements IBaseRepository<any> {
@@ -29,6 +34,21 @@ export class SubmissionRepository implements IBaseRepository<any> {
         return results;
     }
 
+    async getSubmissionRecords(userId: string): Promise<any> {
+        const records = await db
+            .select({
+                date: sql`TO_CHAR(DATE_TRUNC('day', ${submission.createdAt}), 'YYYY-MM-DD')`.as('date'),
+                count: sql`COUNT(*)`.as('count'),
+            })
+            .from(submission)
+            .where(eq(submission.userId, userId))
+            .groupBy(sql`DATE_TRUNC('day', ${submission.createdAt})`)
+            .orderBy(sql`DATE_TRUNC('day', ${submission.createdAt})`);
+        return records.map(record => ({
+            date: new Date(record.date),
+            count: parseInt(record.count)
+        })) ;
+    }
 
     async getAll(): Promise<any> {
         const result = await db.select().from(submission);
