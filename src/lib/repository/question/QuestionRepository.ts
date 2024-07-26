@@ -1,7 +1,7 @@
 import { IBaseRepository } from "../BaseRepository";
 import { db } from "@/server/db/index";
 import { questionDifficulty, questionType, question_questionType, questions } from "@/server/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, ne, sql } from "drizzle-orm";
 import { IQuestionType } from "../questionType/QuestionTypeRepository";
 import { IQuestionDifficulty } from "../questionDifficulty/QuestionDifficultyRepository";
 
@@ -33,15 +33,19 @@ export class QuestionRepository implements IBaseRepository<any> {
 
     async get(id: string): Promise<any> {
         const result = await db.select().from(questions).where(eq(questions.id, id));
-        // console.log(result)
         return result
     };
 
 
     async getAll(): Promise<any> {
-        const result = await db.select().from(questions);
+        const result = await db.select().from(questions).where(ne(questions.status, "pending"));
         return result
     };
+
+    async getAllPending(): Promise<any> {
+        const result = await db.select().from(questions).where(eq(questions.status, "pending"));
+        return result;
+    }
 
     async getAllWithQuestionType(): Promise<QuestionWithTypes[]> {
         const temp = await db.select().from(questions)
@@ -70,6 +74,26 @@ export class QuestionRepository implements IBaseRepository<any> {
         return result
     };
 
+    async createNew(data: any): Promise<any> {
+        const result = await db.insert(questions)
+        .values({
+            title: data.title,
+            difficultyId: data.difficultyId,
+            description: data.description,
+            question: data.question,
+            expectedOutput: data.expectedOutput,
+            status: "pending"
+        })
+        .returning({ insertedId: questions.id });
+        return result;
+    };
+
+    async updatePending(id: string): Promise<any> {
+        const result = await db.update(questions).set({
+            status: "approved"
+        }).where(eq(questions.id, id))
+        return result;
+    }
     create(): any { };
     update(): any { };
     delete(): any { };

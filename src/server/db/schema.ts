@@ -18,6 +18,7 @@ export const questions = createTable("question", {
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
 	updatedAt: timestamp("updatedAt"),
+	status: varchar("status", { length: 100 }),
 	expectedOutput: varchar("expected_output", { length: 10000 }).notNull(),
 });
 

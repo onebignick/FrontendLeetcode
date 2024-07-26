@@ -22,6 +22,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
+import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
 
 const formSchema = z.object({
 	title: z.string()
@@ -30,7 +31,13 @@ const formSchema = z.object({
 		})
 		.max(1000),
 	difficulty: z.string(),
+	description: z.string(),
+	question: z.string(),
+	expectedOutput: z.string(),
+	validationFile: z.any(),
 })
+
+const fileUploadUrl = process.env.NEXT_PUBLIC_FILE_UPLOAD_ENDPOINT || "";
 
 export default function Contribute() {
 
@@ -41,8 +48,27 @@ export default function Contribute() {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values)
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		const response = await fetch("api/createQuestion", {
+			method: "POST",
+			body: JSON.stringify({
+				title: values.title,
+				difficultyId: values.difficulty,
+				description: values.description,
+				question: values.question,
+				expectedOutput: values.expectedOutput,
+			})
+		})
+		const fileName = (await response.json())[0].insertedId + ".py";
+		const fileBody = await values.validationFile.text();
+
+		const res = await fetch(fileUploadUrl, {
+			body: JSON.stringify({
+				fileName: fileName,
+				fileBody: fileBody
+			}),
+			method: "POST"
+		})
 	}
 	return (
 		<div className="px-10 py-5">
@@ -79,6 +105,62 @@ export default function Contribute() {
 										<SelectItem value="5b842ade-c0aa-4a5f-97f1-b86f92e0d273">Hard</SelectItem>
 									</SelectContent>
 								</Select>
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Question Description</FormLabel>
+								<FormControl>
+									<Input placeholder="Description of your question" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="question"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Question Content</FormLabel>
+								<FormControl>
+									<Input placeholder="Write your question here" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="expectedOutput"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Question Solution</FormLabel>
+								<FormControl>
+									<Input placeholder="Write your solution here" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="validationFile"
+						render={({ field: {value, onChange, ...fieldProps} }) => (
+							<FormItem>
+								<FormLabel>Upload a selenium validation file in python for your question</FormLabel>
+								<FormControl>
+									<Input
+										{...fieldProps}
+										type="file"
+										accept="text/python"
+										onChange={(event) => onChange(event.target.files && event.target.files[0])}
+									/>
+								</FormControl>
 							</FormItem>
 						)}
 					/>
