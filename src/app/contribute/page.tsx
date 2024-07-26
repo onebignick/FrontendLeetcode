@@ -1,10 +1,11 @@
 "use client"
-
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod"
-
+import { Spinner } from "@/components/ui/Spinner";
 import { Button } from "@/components/ui/button";
+
 import {
 	Form,
 	FormControl,
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
 import { QuestionRepository } from "@/lib/repository/question/QuestionRepository";
+import { setLazyProp } from "next/dist/server/api-utils";
 
 const formSchema = z.object({
 	title: z.string()
@@ -41,6 +43,8 @@ const fileUploadUrl = process.env.NEXT_PUBLIC_FILE_UPLOAD_ENDPOINT || "";
 
 export default function Contribute() {
 
+	const [loading, setLoading] = useState<boolean>(false);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -49,26 +53,41 @@ export default function Contribute() {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const response = await fetch("api/createQuestion", {
-			method: "POST",
-			body: JSON.stringify({
-				title: values.title,
-				difficultyId: values.difficulty,
-				description: values.description,
-				question: values.question,
-				expectedOutput: values.expectedOutput,
+		setLoading(true);
+		try {
+			const response = await fetch("api/createQuestion", {
+				method: "POST",
+				body: JSON.stringify({
+					title: values.title,
+					difficultyId: values.difficulty,
+					description: values.description,
+					question: values.question,
+					expectedOutput: values.expectedOutput,
+				})
 			})
-		})
-		const fileName = (await response.json())[0].insertedId + ".py";
-		const fileBody = await values.validationFile.text();
+			const fileName = (await response.json())[0].insertedId + ".py";
+			const fileBody = await values.validationFile.text();
 
-		const res = await fetch(fileUploadUrl, {
-			body: JSON.stringify({
-				fileName: fileName,
-				fileBody: fileBody
-			}),
-			method: "POST"
-		})
+			const res = await fetch(fileUploadUrl, {
+				body: JSON.stringify({
+					fileName: fileName,
+					fileBody: fileBody
+				}),
+				method: "POST"
+			})
+
+			form.reset({
+				title: "",
+				difficulty: "",
+				description: "",
+				question: "",
+				expectedOutput: "",
+				validationFile: null,
+			});
+	
+		} finally {
+			setLoading(false);
+		}
 	}
 	return (
 		<div className="px-10 py-5">
@@ -164,7 +183,13 @@ export default function Contribute() {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">Submit</Button>
+					<Button type="submit" className={`w-1/5 ${loading ? "pointer-events-none" : ""}`}>
+						{loading ? (
+							<Spinner />
+						) : (
+							"Submit"
+						)}
+					</Button>
 				</form>
 			</Form>
 		</div>

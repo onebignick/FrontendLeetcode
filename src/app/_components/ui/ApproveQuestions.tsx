@@ -12,7 +12,7 @@ export default async function ApproveQuestions() {
         console.log(id);
     }
     return (
-        <Card>
+        <Card className="max-h-[30%] overflow-y-auto p-2">
             <CardTitle className="px-2 py-4">Questions Pending Approval</CardTitle>
             <div className="flex flex-col space-y-8 p-8">
             {

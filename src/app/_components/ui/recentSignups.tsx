@@ -7,7 +7,7 @@ export default async function RecentSignups() {
     const users = await userRepository.getRecentByCreatedDate(5);
 
     return(
-        <Card>
+        <Card className="max-h-[35%] overflow-y-auto p-2">
             <CardHeader>
                 <CardTitle>Recent Signups</CardTitle>
                 <CardDescription>From the past week</CardDescription>
