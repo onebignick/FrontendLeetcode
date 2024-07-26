@@ -25,7 +25,7 @@ const UserSubmissionHeatMap: React.FC<UserSubmissionHeatMapProps> = ({submission
   };
 
   return (
-    <div className='flex flex-col gap-y-3'>
+    <div className='flex flex-col gap-y-5'>
       <h1 className='text-xl md:text-2xl font-semibold'>Submissions in the last 6 months</h1>
       <CalendarHeatmap
         startDate={shiftDate(today, -150)}
@@ -44,6 +44,12 @@ const UserSubmissionHeatMap: React.FC<UserSubmissionHeatMapProps> = ({submission
         }}
         showWeekdayLabels={true}
       />
+      {(submissionRecords.length > 0) ? (
+        <div className='text-sm md:text-base font-light text-gray-400'>Keep the submissions coming!</div>
+      ) : (
+        <div className='text-sm md:text-base font-light text-gray-400'>No submissions in past 6 months. Get Coding now!</div>
+      )}
+
     </div>
   );
 };

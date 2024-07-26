@@ -97,7 +97,7 @@ export const DiscussionForm = ({ userId, questionId }: Props) => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className={`${loading ? "disabled pointer-events-none" : ""} w-1/4`}>
+                <Button type="submit" className={`${loading ? "pointer-events-none" : ""} w-1/4`}>
                     {loading ? (
                         <Spinner />
                     ) : (
