@@ -32,7 +32,7 @@ const CodeEditor = ({ questionId, userId } : codeEditorProps) => {
 
     // for code validation
     // const apiUrl = process.env.NEXT_PUBLIC_FRONTEND_CODE_VALIDATION_SERVICE_API_ENDPOINT;
-    const apiUrl = "https://frontendcodevalidationservice-cyz3lynf7q-uc.a.run.app/";
+    const apiUrl = "https://frontendcodevalidationservice-cyz3lynf7q-uc.a.run.app";
     const [submissionId, setSubmissionId] = useState<string>();
     const [status, setStatus] = useState<string>('idle');
     const [logs, setLogs] = useState<string[] | null>(null);
